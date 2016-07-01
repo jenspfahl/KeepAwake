@@ -1,0 +1,30 @@
+<schemalist gettext-domain="KeepAwake@jepfa.de">
+  <schema id="org.gnome.shell.extensions.KeepAwake@jepfa.de" path="/org/gnome/shell/extensions/KeepAwake@jepfa.de/">
+    <key name="idle-dim" type="b">
+      <default>false</default>
+      <summary>idle dim</summary>
+      <description>When idle dim the screen</description>
+    </key>
+    <key name="sleep-inactive-ac-type" type="s">
+      <default>'nothing'</default>
+      <summary>sleep inactive ac type</summary>
+      <description>When idle and power port plugged then sleep</description>
+    </key>
+    <key name="sleep-inactive-battery-type" type="s">
+      <default>'nothing'</default>
+      <summary>sleep inactive battery-type</summary>
+      <description>When idle and battery used then sleep</description>
+    </key>
+    <key name="idle-delay" type="i">
+      <default>0</default>
+      <summary>idle delay</summary>
+      <description>Turn off screen when inactive after that idle delay</description>
+    </key>
+     <key name="idle-activation-enabled" type="b">
+      <default>false</default>
+      <summary>idle activation enabled</summary>
+      <description>When idle activate the screensaver</description>
+    </key>
+  </schema>
+</schemalist>
+ 
