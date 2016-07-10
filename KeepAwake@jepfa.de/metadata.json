@@ -12,5 +12,5 @@
   "uuid": "KeepAwake@jepfa.de", 
   "name": "Keep awake!", 
   "settings-schema": "org.gnome.shell.extensions.KeepAwake@jepfa.de", 
-  "description": "Keep your computer awake! Forbid your computer to activate sceensaver, turn off the screen or suspend when it is idle for a while. Toogle this option on or off with one click."
+  "description": "Keep your computer awake! Forbid your computer to activate sceensaver, turn off the screen or suspend when it is idle for a while. Toogle this option on or off with one click. \n\nhttps://github.com/jenspfahl/KeepAwake"
 }
