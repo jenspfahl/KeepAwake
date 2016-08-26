@@ -11,6 +11,8 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 
+const Gettext = imports.gettext.domain('KeepAwake');
+const _ = Gettext.gettext;
 
 const MODE_OFF = 0;
 const MODE_ON = 1;
@@ -164,7 +166,7 @@ function toggleMode() {
         disableVideoMode();
         if (isReadyForWatchingVideo()) {
             // there are all options ready for watching videos at the beginning --> mode keeps "on"
-            Main.notify("Your desktop, screensaver and power options are already fine to keep awake!");	
+            Main.notify(_("Your desktop, screensaver and power options are already fine to keep awake!"));	
         }
         else {
             _mode = MODE_OFF;
@@ -199,10 +201,10 @@ function showModeTween() {
 
   
     if (_mode == MODE_ON) {
-        _tweenText = new St.Label({ style_class: 'video-label-on', text: "Computer keeps awake." });
+        _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
     }
     else if (_mode == MODE_OFF) {
-        _tweenText = new St.Label({ style_class: 'video-label-off', text: "Computer can fall asleep." });
+        _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
     }
     
     Main.uiGroup.add_actor(_tweenText);
@@ -298,6 +300,7 @@ function _reflectChanges() {
 
 
 function init() {
+    Convenience.initTranslations("KeepAwake");
   
     let theme = IconTheme.get_default();
     theme.append_search_path(Me.path + "/icons");
