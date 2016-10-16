@@ -1,0 +1,31 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-14 19:01+0200\n"
+"PO-Revision-Date: 2016-10-14 19:09+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.9\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr\n"
+
+#: extension.js:169
+msgid "Your desktop, screensaver and power options are already fine to keep awake!"
+msgstr "Votre bureau, écran de veille et les options de gestion d'énergie sont déjà définis pour rester éveillé !"
+
+#: extension.js:204
+msgid "Computer keeps awake."
+msgstr "L'ordinateur reste éveillé."
+
+#: extension.js:207
+msgid "Computer can fall asleep."
+msgstr "L'ordinateur peut de nouveau être en veille."
