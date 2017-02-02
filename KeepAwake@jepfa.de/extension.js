@@ -166,7 +166,7 @@ function toggleMode() {
         disableVideoMode();
         if (isReadyForWatchingVideo()) {
             // there are all options ready for watching videos at the beginning --> mode keeps "on"
-            Main.notify(_("Your desktop, screensaver and power options are already fine to keep awake!"));	
+            Main.notify(_("External programs and functions have disabled sleep already."));	
         }
         else {
             _mode = MODE_OFF;
@@ -201,10 +201,10 @@ function showModeTween() {
 
   
     if (_mode == MODE_ON) {
-        _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
+        _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Sleep disabled.") });
     }
     else if (_mode == MODE_OFF) {
-        _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
+        _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Sleep enabled.") });
     }
     
     Main.uiGroup.add_actor(_tweenText);
