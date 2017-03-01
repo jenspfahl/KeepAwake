@@ -18,7 +18,7 @@ This extension can be helpful when you give a presentation or are watching a vid
 	```
 	You can do `ln -s` instead of `cp -r` if you prefer.
 	
-2. Restart gnome shell: Press Alt+F2 -> r -> Enter.  
+2. Restart gnome shell: Press <kbd>Alt</kbd>+<kbd>F2</kbd>, type <kbd>r</kbd>, press <kbd>Enter</kbd>.  
    If that doesn't work (e.g. on Wayland): log out -> log in
    
 3. Install/Run `gnome-tweak-tool` (restart it if it was already running)
