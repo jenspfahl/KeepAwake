@@ -399,7 +399,7 @@ function enable() {
     // restore previous state
     if (getStateRestore() === true) {
         enableVideoMode();    
-        _mode = _MODE_ON_LOCK;
+        _mode = MODE_ON_LOCK;
     }
     
     updateMode();
