@@ -1,6 +1,6 @@
 # Gnome shell extension *Keep Awake* #
 
-Keep your computer be awake! Forbid your computer to activate sceensaver, turn off your screen or suspend when it is idle for a while. Toogle this option on or off by one click.
+Keep your computer be awake! Prevent your computer from activating the screensaver, turning off your screen or suspending when it is idle for a while. One click disables screensaver/suspend. Click once more to make the change persistant between restarts (indicated by a small lock in the indicator icon). Click again to reenable screensavers and suspension.
 
 This extension can be helpful when you give a presentation or are watching a video or are reading a document for a while or any else where your computer should be keep awake.
 
@@ -29,7 +29,7 @@ This extension can be helpful when you give a presentation or are watching a vid
 When you have configured some screensaver or "sleep" powersaving settings, the icon looks like this. 
 ![](pic1.png)
 
-Toggle it to deactivate all screensaver and powersaving settings.
+Toggle it to deactivate all screensaver and powersaving settings. (A small lock icon indicates the setting is persistant between restarts.)
 
 ![](pic2.png)
 
