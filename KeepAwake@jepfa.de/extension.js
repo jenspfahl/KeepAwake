@@ -95,20 +95,20 @@ function setPowerAc(value) {
     _powerSettings.set_string(POWER_AC_KEY, value);
 }
 
-function getStateRestore() {
-    return _extensionSettings.get_boolean(RESTORE_STATE_KEY);
-}
-
-function setStateRestore(value) {
-    _extensionSettings.set_boolean(RESTORE_STATE_KEY, value);
-}
-
 function getPowerBat() {
     return _powerSettings.get_string(POWER_BAT_KEY);
 }
 
 function setPowerBat(value) {
     _powerSettings.set_string(POWER_BAT_KEY, value);
+}
+
+function getStateRestore() {
+    return _extensionSettings.get_boolean(RESTORE_STATE_KEY);
+}
+
+function setStateRestore(value) {
+    _extensionSettings.set_boolean(RESTORE_STATE_KEY, value);
 }
 
 function getSessionDelay() {
@@ -180,7 +180,7 @@ function toggleMode() {
     } 
     else if (_mode == MODE_ON_LOCK) {
     
-        // on --> on with lock
+        // on with lock --> off
         disableVideoMode();
         if (isReadyForWatchingVideo()) {
             // there are all options ready for watching videos at the beginning --> mode keeps "on"
@@ -220,8 +220,11 @@ function updateMode() {
 function showModeTween() {
 
   
-    if (_mode == MODE_ON || _mode == MODE_ON_LOCK) {
+    if (_mode == MODE_ON) {
         _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
+    } 
+    else if (_mode == MODE_ON_LOCK) {
+	_tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
     }
     else if (_mode == MODE_OFF) {
         _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
