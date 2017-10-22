@@ -16,6 +16,8 @@ const _ = Gettext.gettext;
 
 const MODE_OFF = 0;
 const MODE_ON = 1;
+const MODE_ON_LOCK = 2;
+
 
 
 /*
@@ -45,6 +47,7 @@ const POWER_SCHEMA			= 'org.gnome.settings-daemon.plugins.power';
 const POWER_DIM_KEY			= 'idle-dim';
 const POWER_AC_KEY			= 'sleep-inactive-ac-type';
 const POWER_BAT_KEY			= 'sleep-inactive-battery-type';
+const RESTORE_STATE_KEY			= 'restore-state';
 
 const SESSION_SCHEMA			= 'org.gnome.desktop.session';
 const SESSION_DELAY_KEY			= 'idle-delay';
@@ -63,10 +66,11 @@ const SCREENSAVER_ACTIVATION_DEFAULT = false;
 let _powerSettings, _sessionSettings, _screensaverSettings, _extensionSettings;
 
 // IU components
-let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _tweenText, _buttonPressEventId;
+let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _tweenText, _buttonPressEventId;
 
 // 0 = video mode off --> system/monitor (possibly) suspends when idle
 // 1 = video mode on --> system/monitor doesn't suspend when idle
+// 2 = video mode on and locked between restarts of shell/system
 let _mode;
 
 let _lastPowerDim, _lastPowerAc, _lastPowerBat, _lastSessionDelay, _lastScreensaverActivation;
@@ -97,6 +101,14 @@ function getPowerBat() {
 
 function setPowerBat(value) {
     _powerSettings.set_string(POWER_BAT_KEY, value);
+}
+
+function getStateRestore() {
+    return _extensionSettings.get_boolean(RESTORE_STATE_KEY);
+}
+
+function setStateRestore(value) {
+    _extensionSettings.set_boolean(RESTORE_STATE_KEY, value);
 }
 
 function getSessionDelay() {
@@ -160,18 +172,26 @@ function isReadyForWatchingVideo() {
 
 function toggleMode() {
   
-    if (_mode == MODE_ON) {
-      
-        // on --> off
+    if (_mode == MODE_ON) {    
+
+        // on --> on with lock
+	    _mode = MODE_ON_LOCK;
+	    setStateRestore(true);            
+    } 
+    else if (_mode == MODE_ON_LOCK) {
+    
+        // on with lock --> off
         disableVideoMode();
         if (isReadyForWatchingVideo()) {
             // there are all options ready for watching videos at the beginning --> mode keeps "on"
-            Main.notify(_("Your desktop, screensaver and power options are already fine to keep awake!"));	
+            Main.notify(_("Your desktop, screensaver and power options are already fine to keep awake!"));
+            _mode = MODE_ON; // but we switch off the persistance
+            setStateRestore(false);
         }
         else {
             _mode = MODE_OFF;
+            setStateRestore(false);
         }
-      
     }
     else if (_mode == MODE_OFF) {
       
@@ -187,7 +207,7 @@ function toggleMode() {
 function updateMode() {
   
     if (isReadyForWatchingVideo()) {
-        _mode = MODE_ON;
+        _mode = getStateRestore() ? MODE_ON_LOCK : MODE_ON;
     }
     else {
         _mode = MODE_OFF;
@@ -202,6 +222,9 @@ function showModeTween() {
   
     if (_mode == MODE_ON) {
         _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
+    } 
+    else if (_mode == MODE_ON_LOCK) {
+	_tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
     }
     else if (_mode == MODE_OFF) {
         _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
@@ -231,14 +254,14 @@ function hideModeTween() {
 
 function updateIcon() {
 
-    if (_mode == MODE_ON) {
+    if (_mode == MODE_ON || _mode == MODE_ON_LOCK) {
         _trayButton.set_background_color(new Clutter.Color({
           red : 255,
           green : 248,
           blue : 0,
           alpha : 100
         }));
-	_trayButton.set_child(_trayIconOn);
+	_trayButton.set_child( _mode == MODE_ON ? _trayIconOn: _trayIconOnLock);
     }
     else if (_mode == MODE_OFF) {
         _trayButton.set_background_color(_bgTrayColor);
@@ -315,6 +338,8 @@ function init() {
                              style_class: 'system-status-icon' });
     _trayIconOff = new St.Icon({ icon_name: 'eye-off-symbolic',  
                              style_class: 'system-status-icon' });
+    _trayIconOnLock = new St.Icon({ icon_name: 'eye-on-lock-symbolic',  
+                             style_class: 'system-status-icon' });
 
     
     // init GSettings
@@ -372,6 +397,13 @@ function enable() {
     Main.panel._rightBox.insert_child_at_index(_trayButton, 0);
     
     _buttonPressEventId = _trayButton.connect('button-press-event', _handleIconClicked);
+
+
+    // restore previous state
+    if (getStateRestore() === true) {
+        enableVideoMode();    
+        _mode = MODE_ON_LOCK;
+    }
     
     updateMode();
     updateIcon();

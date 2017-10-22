@@ -13,5 +13,5 @@
   "url": "https://github.com/jenspfahl/KeepAwake", 
   "name": "Keep awake!", 
   "settings-schema": "org.gnome.shell.extensions.KeepAwake@jepfa.de", 
-  "description": "Keep your computer awake! Forbid your computer to activate sceensaver, turn off the screen or suspend when it is idle for a while. Toggle this option on or off with one click."
+  "description": "Keep your computer awake! Forbid your computer to activate sceensaver, turn off the screen or suspend when it is idle for a while. Click the indicator icon (in the taskbar) once to keep your computer awake for the session. Click again to enable persistance of this setting between restarts (indicated by a small lock icon on the indicator). Switch off by clicking again."
 }

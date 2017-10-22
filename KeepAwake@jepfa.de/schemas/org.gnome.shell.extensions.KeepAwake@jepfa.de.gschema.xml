@@ -25,6 +25,11 @@
       <summary>idle activation enabled</summary>
       <description>When idle activate the screensaver</description>
     </key>
+     <key name="restore-state" type="b">
+      <default>false</default>
+      <summary>restart state after shell/system restart</summary>
+      <description>Restore state after a shell/system restart</description>
+    </key>
   </schema>
 </schemalist>
  
