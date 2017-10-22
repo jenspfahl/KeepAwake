@@ -21,10 +21,14 @@ msgstr ""
 msgid "Your desktop, screensaver and power options are already fine to keep awake!"
 msgstr "Desktop, Bildschirmschoner und Energiesparoptionen sind bereits auf wach bleiben gestellt!"
 
-#: extension.js:204
+#: extension.js:224
 msgid "Computer keeps awake."
 msgstr "Rechner bleibt wach."
 
-#: extension.js:207
+#: extension.js:227
+msgid "Computer keeps awake, even after restarts."
+msgstr "Rechner bleibt wach, auch nach Neustart."
+
+#: extension.js:230
 msgid "Computer can fall asleep."
 msgstr "Rechner kann einschlafen."
