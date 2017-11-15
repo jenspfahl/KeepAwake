@@ -66,7 +66,7 @@ const SCREENSAVER_ACTIVATION_DEFAULT = false;
 let _powerSettings, _sessionSettings, _screensaverSettings, _extensionSettings;
 
 // IU components
-let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _tweenText, _buttonPressEventId;
+let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _buttonPressEventId;
 
 // 0 = video mode off --> system/monitor (possibly) suspends when idle
 // 1 = video mode on --> system/monitor doesn't suspend when idle
@@ -219,36 +219,37 @@ function updateMode() {
 
 function showModeTween() {
 
-  
+    let tweenText;
+    
     if (_mode == MODE_ON) {
-        _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
-    } 
+        tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
+    }
     else if (_mode == MODE_ON_LOCK) {
-	_tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
+        tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
     }
     else if (_mode == MODE_OFF) {
-        _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
+        tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
     }
     
-    Main.uiGroup.add_actor(_tweenText);
+    Main.uiGroup.add_actor(tweenText);
 
 
     let monitor = Main.layoutManager.primaryMonitor;
 
-    _tweenText.set_position(monitor.x + Math.floor(monitor.width / 2 - _tweenText.width / 2),
-                      monitor.y + Math.floor(monitor.height / 2 - _tweenText.height / 2));
+    tweenText.set_position(monitor.x + Math.floor(monitor.width / 2 - tweenText.width / 2),
+                      monitor.y + Math.floor(monitor.height / 2 - tweenText.height / 2));
 
-    Tweener.addTween(_tweenText,
+    Tweener.addTween(tweenText,
                      { opacity: 0,
                        time: 4,
                        transition: 'easeOutQuad',
-                       onComplete: hideModeTween });
+                       onComplete: function() { hideModeTween(tweenText); }
+                     });
 }
 
 
-function hideModeTween() {
-    Main.uiGroup.remove_actor(_tweenText);
-    _tweenText = null;
+function hideModeTween(tweenText) {
+    Main.uiGroup.remove_actor(tweenText);
 }
 
 
