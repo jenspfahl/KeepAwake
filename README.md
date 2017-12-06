@@ -14,6 +14,7 @@ This extension can be helpful when you give a presentation or are watching a vid
 	mkdir git
 	cd git
 	git clone https://github.com/jenspfahl/KeepAwake.git
+	mkdir -p ~/.local/share/gnome-shell/extensions
 	cp -r KeepAwake/KeepAwake@jepfa.de ~/.local/share/gnome-shell/extensions/
 	```
 	You can do `ln -s` instead of `cp -r` if you prefer.
