@@ -32,3 +32,7 @@ msgstr "Rechner bleibt wach, auch nach Neustart."
 #: extension.js:230
 msgid "Computer can fall asleep."
 msgstr "Rechner kann einschlafen."
+
+#: prefs.js:33
+msgid "Show yellow background icon if keep awake enabled"
+msgstr "Zeige gelbes Hintergrundsymbol wenn Rechner wach bleibt"

@@ -29,3 +29,7 @@ msgstr ""
 #: extension.js:207
 msgid "Computer can fall asleep."
 msgstr ""
+
+#: prefs.js:33
+msgid "Show yellow background icon if keep awake enabled"
+msgstr ""

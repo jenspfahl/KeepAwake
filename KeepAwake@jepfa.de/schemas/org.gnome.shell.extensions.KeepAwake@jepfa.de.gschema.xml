@@ -30,6 +30,10 @@
       <summary>restart state after shell/system restart</summary>
       <description>Restore state after a shell/system restart</description>
     </key>
+    <key name="no-yellow-background" type="b">
+      <default>false</default>
+      <summary>no yellow background</summary>
+      <description>No yellow background icon if keep awake</description>
+    </key>
   </schema>
 </schemalist>
- 
