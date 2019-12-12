@@ -35,5 +35,10 @@
       <summary>no yellow background</summary>
       <description>No yellow background icon if keep awake</description>
     </key>
+    <key name="enable-notifications" type="b">
+      <default>true</default>
+      <summary>enable notifications</summary>
+      <description>Enable notifications on mode change</description>
+    </key>
   </schema>
 </schemalist>
