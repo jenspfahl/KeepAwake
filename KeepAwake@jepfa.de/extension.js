@@ -60,6 +60,7 @@ const POWER_BAT_DEFAULT = 'nothing';
 const SESSION_DELAY_DEFAULT = 0;
 const SCREENSAVER_ACTIVATION_DEFAULT = false;
 const NO_YELLOW_BACKGROUND = 'no-yellow-background';
+const ENABLE_NOTIFICATIONS = 'enable-notifications';
 
 
 // settings
@@ -131,6 +132,9 @@ function getNoYellowBackground() {
     return _extensionSettings.get_boolean(NO_YELLOW_BACKGROUND);
 }
 
+function getEnableNotifications() {
+    return _extensionSettings.get_boolean(ENABLE_NOTIFICATIONS);
+}
 
 
 function enableVideoMode() {
@@ -284,7 +288,9 @@ function _handleIconClicked() {
 
     toggleMode();
     updateIcon();
-    showModeTween();
+    if (getEnableNotifications()) {
+        showModeTween();
+    }
 
 }
 

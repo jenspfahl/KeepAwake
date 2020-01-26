@@ -12,6 +12,7 @@ const Gettext = imports.gettext.domain('KeepAwake');
 const _ = Gettext.gettext;
 
 const NO_YELLOW_BACKGROUND = 'no-yellow-background';
+const ENABLE_NOTIFICATIONS = 'enable-notifications';
 
 
 function init() {
@@ -28,21 +29,35 @@ ShowDesktopSettingsWidget.prototype = {
         this._grid = new Gtk.Grid();
         this._grid.margin = 50;
         this._grid.row_spacing = this._grid.column_spacing = 20;
-	      this._settings = Convenience.getSettings();
+	    this._settings = Convenience.getSettings();
 
-        let introLabel = _("Show yellow background icon if keep awake enabled");
+        let yellowBackgroundLabel = _("Show yellow background icon if keep awake enabled");
 
-        this._grid.attach(new Gtk.Label({ label: introLabel, wrap: true, sensitive: true,
+        this._grid.attach(new Gtk.Label({ label: yellowBackgroundLabel, wrap: true, sensitive: true,
+                                   margin_bottom: 10, margin_top: 5 }),
+                                    0, 0, 1, 1);
+
+        let currentNoYellowBackground = this._settings.get_boolean(NO_YELLOW_BACKGROUND);
+        let noYellowBackgroundSwitcher = new Gtk.Switch();
+        noYellowBackgroundSwitcher.active = !currentNoYellowBackground;
+        this._grid.attach(noYellowBackgroundSwitcher, 1, 0, 1, 1);
+
+        noYellowBackgroundSwitcher.connect('state-set', Lang.bind(this, function(widget) {
+              this._settings.set_boolean(NO_YELLOW_BACKGROUND, !this._settings.get_boolean(NO_YELLOW_BACKGROUND));
+            }));
+
+        let enableNotificationsLabel = _("Show notifications on mode change");
+
+        this._grid.attach(new Gtk.Label({ label: enableNotificationsLabel, wrap: true, sensitive: true,
                                    margin_bottom: 10, margin_top: 5 }),
                                     0, 1, 1, 1);
 
-        let currentNoYellowBackground = this._settings.get_boolean(NO_YELLOW_BACKGROUND);
-        let switcher = new Gtk.Switch();
-        switcher.active = !currentNoYellowBackground;
-        this._grid.attach(switcher, 1, 1, 1, 1);
-
-        switcher.connect('state-set', Lang.bind(this, function(widget) {
-              this._settings.set_boolean(NO_YELLOW_BACKGROUND, !this._settings.get_boolean(NO_YELLOW_BACKGROUND));
+        let currentEnableNotifications = this._settings.get_boolean(ENABLE_NOTIFICATIONS);
+        let enableNotificationsSwitcher = new Gtk.Switch();
+        enableNotificationsSwitcher.active = currentEnableNotifications;
+        this._grid.attach(enableNotificationsSwitcher, 1, 1, 1, 1);
+        enableNotificationsSwitcher.connect('state-set', Lang.bind(this, function(widget) {
+              this._settings.set_boolean(ENABLE_NOTIFICATIONS, !this._settings.get_boolean(ENABLE_NOTIFICATIONS));
             }));
     },
 
