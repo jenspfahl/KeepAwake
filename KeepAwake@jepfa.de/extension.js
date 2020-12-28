@@ -342,8 +342,8 @@ function init() {
     _trayButton = new St.Bin({ style_class: 'panel-button',
                           reactive: true,
                           can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
+                          x_expand: true,
+                          y_expand: false,
                           track_hover: true });
     _trayIconOn = new St.Icon({ style_class: 'system-status-icon' });
     _trayIconOff = new St.Icon({style_class: 'system-status-icon' });
