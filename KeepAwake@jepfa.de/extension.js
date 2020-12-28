@@ -2,7 +2,7 @@
 
 const St = imports.gi.St;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
+const Tweener = imports.tweener.tweener;
 const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
 
