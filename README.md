@@ -1,10 +1,14 @@
 # Gnome shell extension *Keep Awake* #
 
-Keep your computer be awake! Prevent your computer from activating the screensaver, turning off your screen or suspending when it is idle for a while. One click disables screensaver/suspend. Click once more to make the change persistant between restarts (indicated by a small lock in the indicator icon). Click again to reenable screensavers and suspension.
+Keep your computer awake! Prevent your computer from activating the screensaver, turning off your screen or suspending when it is idle for a while. One click disables screensaver/suspend. Click one more to make the change persistant between restarts (indicated by a small lock in the indicator icon). Click again to reenable screensavers and suspension.
 
-This extension can be helpful when you give a presentation or are watching a video or are reading a document for a while or any else where your computer should be keep awake.
+This extension can be helpful when you present a presentation or are watching a video or are reading a document for a while or any else where your computer should be keep awake.
 
 ## Installation ##
+
+Go to [extensions.gnome.org](https://extensions.gnome.org/extension/1097/keep-awake/) and install *Keep Awake* directly from your browser.
+
+Alternatively:
 
 1. Drop the `KeepAwake@jepfa.de` folder and its contents into `~/.local/share/gnome-shell/extensions/`.  
 	One way to do this is as follows:
@@ -38,7 +42,7 @@ Now you can watch videos absolutely undisturbed!
 
 ## Interna ##
  
-This extension toggle following Gnome Settings:
+This extension toggles following Gnome Settings:
  
  
 From `org.gnome.settings-daemon.plugins.power`:
@@ -56,4 +60,4 @@ From `org.gnome.desktop.screensaver`:
  
 * `idle-activation-enabled`: Activate screensaver when idle
 
-If you wish to toggle some more settings, please contact me or create a pull request.
+
