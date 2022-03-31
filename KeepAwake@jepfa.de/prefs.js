@@ -7,6 +7,9 @@ const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
+const Config = imports.misc.config;
+const [major] = Config.PACKAGE_VERSION.split('.');
+const shellVersion = Number.parseInt(major);
 
 const Gettext = imports.gettext.domain('KeepAwake');
 const _ = Gettext.gettext;
@@ -69,8 +72,13 @@ ShowDesktopSettingsWidget.prototype = {
                                  'hscrollbar-policy': Gtk.PolicyType.AUTOMATIC,
                                  'vscrollbar-policy': Gtk.PolicyType.AUTOMATIC,
                                  'hexpand': true, 'vexpand': true});
-        scollingWindow.set_child(this._grid);
-        scollingWindow.show();
+        if (shellVersion >= 40){
+            scollingWindow.set_child(this._grid);
+            scollingWindow.show();
+        }else {
+            scollingWindow.add_with_viewport(this._grid);
+            scollingWindow.show_all();
+        }
         return scollingWindow;
     }
 };
