@@ -27,7 +27,10 @@ ShowDesktopSettingsWidget.prototype = {
 
     _init: function() {
         this._grid = new Gtk.Grid();
-        this._grid.margin = 50;
+        this._grid.margin_start = 50;
+        this._grid.margin_end = 50;
+        this._grid.margin_top = 50;
+        this._grid.margin_bottom = 50;
         this._grid.row_spacing = this._grid.column_spacing = 20;
 	    this._settings = Convenience.getSettings();
 
@@ -66,8 +69,8 @@ ShowDesktopSettingsWidget.prototype = {
                                  'hscrollbar-policy': Gtk.PolicyType.AUTOMATIC,
                                  'vscrollbar-policy': Gtk.PolicyType.AUTOMATIC,
                                  'hexpand': true, 'vexpand': true});
-        scollingWindow.add_with_viewport(this._grid);
-        scollingWindow.show_all();
+        scollingWindow.set_child(this._grid);
+        scollingWindow.show();
         return scollingWindow;
     }
 };

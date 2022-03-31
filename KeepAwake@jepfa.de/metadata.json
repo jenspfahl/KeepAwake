@@ -21,9 +21,11 @@
     "3.32",
     "3.34",
     "3.36",
-    "3.38"
+    "3.38",
+    "40",
+    "41"
   ], 
   "url": "https://github.com/jenspfahl/KeepAwake", 
   "uuid": "KeepAwake@jepfa.de", 
-  "version": 5
+  "version": 6
 }
