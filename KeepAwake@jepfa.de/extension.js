@@ -59,8 +59,9 @@ const POWER_AC_DEFAULT = 'nothing';
 const POWER_BAT_DEFAULT = 'nothing';
 const SESSION_DELAY_DEFAULT = 0;
 const SCREENSAVER_ACTIVATION_DEFAULT = false;
-const NO_YELLOW_BACKGROUND = 'no-yellow-background';
+const NO_COLOR_BACKGROUND = 'no-color-background';
 const ENABLE_NOTIFICATIONS = 'enable-notifications';
+const BACKGROUND_COLOR = 'background-color';
 
 
 // settings
@@ -128,8 +129,12 @@ function setScreensaverActivation(value) {
     _screensaverSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, value);
 }
 
-function getNoYellowBackground() {
-    return _extensionSettings.get_boolean(NO_YELLOW_BACKGROUND);
+function getBackgroundColor(){
+    return _extensionSettings.get_string(BACKGROUND_COLOR);
+}
+
+function getNoColorBackground() {
+    return _extensionSettings.get_boolean(NO_COLOR_BACKGROUND);
 }
 
 function getEnableNotifications() {
@@ -262,16 +267,11 @@ function hideModeTween() {
 function updateIcon() {
 
     if (_mode == MODE_ON || _mode == MODE_ON_LOCK) {
-      if (getNoYellowBackground()) {
+      if (getNoColorBackground()) {
         _trayButton.set_background_color(_bgTrayColor);
       }
       else {
-        _trayButton.set_background_color(new Clutter.Color({
-          red : 255,
-          green : 248,
-          blue : 0,
-          alpha : 100
-        }));
+        _trayButton.set_background_color(color_from_string(getBackgroundColor()));
       }
 	    _trayButton.set_child( _mode == MODE_ON ? _trayIconOn: _trayIconOnLock);
     }
@@ -282,6 +282,18 @@ function updateIcon() {
 
 }
 
+function color_from_string(color) {
+    let clutterColor, res;
+
+    if (!Clutter.Color.from_string) {
+        clutterColor = new Clutter.Color();
+        clutterColor.from_string(color);
+    } else {
+        [res, clutterColor] = Clutter.Color.from_string(color);
+    }
+
+    return clutterColor;
+}
 
 
 function _handleIconClicked() {

@@ -3,6 +3,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
 const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -11,8 +12,9 @@ const Convenience = Me.imports.convenience;
 const Gettext = imports.gettext.domain('KeepAwake');
 const _ = Gettext.gettext;
 
-const NO_YELLOW_BACKGROUND = 'no-yellow-background';
+const NO_COLOR_BACKGROUND = 'no-color-background';
 const ENABLE_NOTIFICATIONS = 'enable-notifications';
+const BACKGROUND_COLOR = 'background-color';
 
 
 function init() {
@@ -31,31 +33,55 @@ ShowDesktopSettingsWidget.prototype = {
         this._grid.row_spacing = this._grid.column_spacing = 20;
 	    this._settings = Convenience.getSettings();
 
-        let yellowBackgroundLabel = _("Show yellow background icon if keep awake enabled");
+        // first setting row
+        let colorBackgroundLabel = _("Show this background color");
 
-        this._grid.attach(new Gtk.Label({ label: yellowBackgroundLabel, wrap: true, sensitive: true,
+        this._grid.attach(new Gtk.Label({ label: colorBackgroundLabel, wrap: true, sensitive: true,
                                    margin_bottom: 10, margin_top: 5 }),
                                     0, 0, 1, 1);
 
-        let currentNoYellowBackground = this._settings.get_boolean(NO_YELLOW_BACKGROUND);
-        let noYellowBackgroundSwitcher = new Gtk.Switch();
-        noYellowBackgroundSwitcher.active = !currentNoYellowBackground;
-        this._grid.attach(noYellowBackgroundSwitcher, 1, 0, 1, 1);
+        const rgba = new Gdk.RGBA();
+        rgba.parse(this._settings.get_string(BACKGROUND_COLOR));
 
-        noYellowBackgroundSwitcher.connect('state-set', Lang.bind(this, function(widget) {
-              this._settings.set_boolean(NO_YELLOW_BACKGROUND, !this._settings.get_boolean(NO_YELLOW_BACKGROUND));
+        let backgroundColor = new Gtk.ColorButton({
+            rgba: rgba,
+            show_editor: true,
+            use_alpha: true,
+            visible: true
+        });
+        this._grid.attach(backgroundColor, 1, 0, 1, 1);
+    
+        backgroundColor.connect('color-set', Lang.bind(this, function(widget) {
+            this._settings.set_string(BACKGROUND_COLOR, backgroundColor.get_rgba().to_string());
+        }));
+
+        // second setting row
+        let colorOnBackgroundLabel = _("Show background-color icon if keep awake enabled");
+
+        this._grid.attach(new Gtk.Label({ label: colorOnBackgroundLabel, wrap: true, sensitive: true,
+                                   margin_bottom: 10, margin_top: 5 }),
+                                    0, 1, 1, 1);
+
+        let currentNoColorBackground = this._settings.get_boolean(NO_COLOR_BACKGROUND);
+        let noColorBackgroundSwitcher = new Gtk.Switch();
+        noColorBackgroundSwitcher.active = !currentNoColorBackground;
+        this._grid.attach(noColorBackgroundSwitcher, 1, 1, 1, 1);
+
+        noColorBackgroundSwitcher.connect('state-set', Lang.bind(this, function(widget) {
+              this._settings.set_boolean(NO_COLOR_BACKGROUND, !this._settings.get_boolean(NO_COLOR_BACKGROUND));
             }));
 
+        // thrid setting row
         let enableNotificationsLabel = _("Show notifications on mode change");
 
         this._grid.attach(new Gtk.Label({ label: enableNotificationsLabel, wrap: true, sensitive: true,
                                    margin_bottom: 10, margin_top: 5 }),
-                                    0, 1, 1, 1);
+                                    0, 2, 1, 1);
 
         let currentEnableNotifications = this._settings.get_boolean(ENABLE_NOTIFICATIONS);
         let enableNotificationsSwitcher = new Gtk.Switch();
         enableNotificationsSwitcher.active = currentEnableNotifications;
-        this._grid.attach(enableNotificationsSwitcher, 1, 1, 1, 1);
+        this._grid.attach(enableNotificationsSwitcher, 1, 2, 1, 1);
         enableNotificationsSwitcher.connect('state-set', Lang.bind(this, function(widget) {
               this._settings.set_boolean(ENABLE_NOTIFICATIONS, !this._settings.get_boolean(ENABLE_NOTIFICATIONS));
             }));
