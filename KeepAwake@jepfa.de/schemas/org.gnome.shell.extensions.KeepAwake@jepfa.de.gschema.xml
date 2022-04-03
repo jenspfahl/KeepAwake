@@ -30,15 +30,20 @@
       <summary>restart state after shell/system restart</summary>
       <description>Restore state after a shell/system restart</description>
     </key>
-    <key name="no-yellow-background" type="b">
+    <key name="no-color-background" type="b">
       <default>false</default>
-      <summary>no yellow background</summary>
-      <description>No yellow background icon if keep awake</description>
+      <summary>no color background</summary>
+      <description>No color background icon if keep awake</description>
     </key>
     <key name="enable-notifications" type="b">
       <default>true</default>
       <summary>enable notifications</summary>
       <description>Enable notifications on mode change</description>
+    </key>
+    <key name="background-color" type="s">
+      <default>'rgba(255,248,0,0.3921)'</default>
+      <summary>background color of icon if active</summary>
+      <description>Choose background color of icon if keep awake</description>
     </key>
   </schema>
 </schemalist>

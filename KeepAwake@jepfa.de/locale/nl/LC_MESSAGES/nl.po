@@ -29,7 +29,3 @@ msgstr "De computer wordt niet in de slaapstand gezet."
 #: extension.js:207
 msgid "Computer can fall asleep."
 msgstr "De computer wordt in de slaapstand gezet."
-
-#: prefs.js:33
-msgid "Show yellow background icon if keep awake enabled"
-msgstr "Gele achtergrond tonen achter pictogram indien ingeschakeld"

@@ -30,6 +30,17 @@ msgstr ""
 msgid "Computer can fall asleep."
 msgstr ""
 
-#: prefs.js:33
-msgid "Show yellow background icon if keep awake enabled"
+
+#: prefs.js:43
+msgid "Show notifications on mode change"
+msgstr ""
+
+
+#: prefs.js:58
+msgid "Show background-colored icon if keep awake is enabled"
+msgstr ""
+
+
+#: prefs.js:75
+msgid "Use this background color"
 msgstr ""
