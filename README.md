@@ -4,6 +4,10 @@ Keep your computer awake! Prevent your computer from activating the screensaver,
 
 This extension can be helpful when you present a presentation or are watching a video or are reading a document for a while or any else where your computer should be keep awake.
 
+To get the latest released version for Gnome 3.34 or later, get it easily from [extensions.gnome.org](https://extensions.gnome.org/extension/1097/keep-awake/).
+
+Note: If you want to use this extension for Gnome 3.34 and less, checkout tag [legacy](https://github.com/jenspfahl/KeepAwake/tree/legacy) and install manually as followed.
+
 ## Installation ##
 
 Go to [extensions.gnome.org](https://extensions.gnome.org/extension/1097/keep-awake/) and install *Keep Awake* directly from your browser.
