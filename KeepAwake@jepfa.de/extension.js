@@ -1,4 +1,4 @@
-// Author: Jens Pfahl
+// Author: Jens Pfahl and contributors
 
 const St = imports.gi.St;
 const Main = imports.ui.main;
@@ -8,7 +8,6 @@ const Clutter = imports.gi.Clutter;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
 
 const Gettext = imports.gettext.domain('KeepAwake');
 const _ = Gettext.gettext;
@@ -236,7 +235,7 @@ function showModeTween() {
         _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
     }
     else if (_mode == MODE_ON_LOCK) {
-	_tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
+	     _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
     }
     else if (_mode == MODE_OFF) {
         _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
@@ -254,7 +253,14 @@ function showModeTween() {
                      { opacity: 0,
                        time: 4,
                        transition: 'easeOutQuad',
-                       onComplete: () => { Main.uiGroup.remove_actor(_tweenText); } });
+                       onComplete: () => {
+                         if (_tweenText != null) {
+                           Main.uiGroup.remove_actor(_tweenText);
+                           _tweenText.destroy();
+                           _tweenText = null;
+                         }
+                     }
+                   });
 }
 
 
@@ -343,7 +349,11 @@ function _reflectChanges() {
 
 
 function init() {
-    Convenience.initTranslations("KeepAwake");
+    ExtensionUtils.initTranslations("KeepAwake");
+}
+
+
+function enable() {
 
     _trayButton = new St.Bin({ style_class: 'panel-button',
                           reactive: true,
@@ -364,13 +374,9 @@ function init() {
     _powerSettings = new Gio.Settings({ schema_id: POWER_SCHEMA });
     _sessionSettings = new Gio.Settings({ schema_id: SESSION_SCHEMA });
     _screensaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
-    _extensionSettings = Convenience.getSettings();
+    _extensionSettings = ExtensionUtils.getSettings();
 
 
-}
-
-
-function enable() {
 
     _bgTrayColor = _trayButton.get_background_color();
 
@@ -432,6 +438,7 @@ function enable() {
 function disable() {
 
     disableVideoMode();
+
     _trayButton.disconnect(_buttonPressEventId);
     Main.panel._rightBox.remove_child(_trayButton);
 
@@ -448,5 +455,14 @@ function disable() {
     _extensionSettings.set_string(POWER_BAT_KEY, POWER_BAT_DEFAULT);
     _extensionSettings.set_int(SESSION_DELAY_KEY, SESSION_DELAY_DEFAULT);
     _extensionSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, SCREENSAVER_ACTIVATION_DEFAULT);
+
+    _trayButton.destroy();
+    _trayButton = null;
+    _trayIconOn.destroy();
+    _trayIconOn = null;
+    _trayIconOff.destroy();
+    _trayIconOff = null;
+    _trayIconOnLock.destroy();
+    _trayIconOnLock = null;
 
 }
