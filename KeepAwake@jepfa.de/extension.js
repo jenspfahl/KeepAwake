@@ -68,7 +68,7 @@ const BACKGROUND_COLOR = 'background-color';
 let _powerSettings, _sessionSettings, _screensaverSettings, _extensionSettings;
 
 // IU components
-let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _tweenText, _buttonPressEventId;
+let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _buttonPressEventId;
 
 // 0 = video mode off --> system/monitor (possibly) suspends when idle
 // 1 = video mode on --> system/monitor doesn't suspend when idle
@@ -230,7 +230,7 @@ function updateMode() {
 
 
 function showModeTween() {
-
+    let _tweenText;
 
     if (_mode == MODE_ON) {
         _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
@@ -254,13 +254,7 @@ function showModeTween() {
                      { opacity: 0,
                        time: 4,
                        transition: 'easeOutQuad',
-                       onComplete: hideModeTween });
-}
-
-
-function hideModeTween() {
-    Main.uiGroup.remove_actor(_tweenText);
-    _tweenText = null;
+                       onComplete: () => { Main.uiGroup.remove_actor(_tweenText); } });
 }
 
 
