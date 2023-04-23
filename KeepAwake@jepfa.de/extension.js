@@ -456,6 +456,7 @@ function disable() {
     _extensionSettings.set_int(SESSION_DELAY_KEY, SESSION_DELAY_DEFAULT);
     _extensionSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, SCREENSAVER_ACTIVATION_DEFAULT);
 
+    _trayButton.set_child(null);
     _trayButton.destroy();
     _trayButton = null;
     _trayIconOn.destroy();
