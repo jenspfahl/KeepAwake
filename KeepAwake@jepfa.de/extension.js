@@ -5,6 +5,7 @@ const Main = imports.ui.main;
 const Tweener = imports.tweener.tweener;
 const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
+const Mainloop = imports.mainloop;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -298,10 +299,18 @@ function color_from_string(color) {
 
 function _handleIconClicked() {
 
-    toggleMode();
-    updateIcon();
-    if (getEnableNotifications()) {
-        showModeTween();
+    // prevent multiple touch event in short succession
+    if (!this._touchTooSoon) {
+        this._touchTooSoon = true;
+
+        toggleMode();
+        updateIcon();
+        if (getEnableNotifications()) {
+            showModeTween();
+        }
+
+        // reset the flag after a small delay to allow touch events again
+        Mainloop.timeout_add(200, () => { this._touchTooSoon = false });
     }
 
 }
@@ -421,6 +430,7 @@ function enable() {
     Main.panel._rightBox.insert_child_at_index(_trayButton, 0);
 
     _buttonPressEventId = _trayButton.connect('button-press-event', _handleIconClicked);
+    _buttonPressEventId = _trayButton.connect('touch-event', _handleIconClicked);
 
 
     // restore previous state
