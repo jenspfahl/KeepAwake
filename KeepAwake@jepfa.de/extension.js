@@ -5,7 +5,6 @@ const Main = imports.ui.main;
 const Tweener = imports.tweener.tweener;
 const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
-const Mainloop = imports.mainloop;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -297,22 +296,19 @@ function color_from_string(color) {
 }
 
 
-function _handleIconClicked() {
+function _handleIconClicked(actor, event) {
 
-    // prevent multiple touch event in short succession
-    if (!this._touchTooSoon) {
-        this._touchTooSoon = true;
+    // only trigger clicked event on cursor click (mouse/touchpad) or touch begin
+    // to prevent multiple triggers on a single touch event (touch start + touch end)
+    if (event.type() === Clutter.EventType.BUTTON_PRESS ||
+        event.type() === Clutter.EventType.TOUCH_BEGIN) {
 
         toggleMode();
         updateIcon();
         if (getEnableNotifications()) {
             showModeTween();
         }
-
-        // reset the flag after a small delay to allow touch events again
-        Mainloop.timeout_add(200, () => { this._touchTooSoon = false });
     }
-
 }
 
 
