@@ -296,14 +296,19 @@ function color_from_string(color) {
 }
 
 
-function _handleIconClicked() {
+function _handleIconClicked(actor, event) {
 
-    toggleMode();
-    updateIcon();
-    if (getEnableNotifications()) {
-        showModeTween();
+    // only trigger clicked event on cursor click (mouse/touchpad) or touch begin
+    // to prevent multiple triggers on a single touch event (touch start + touch end)
+    if (event.type() === Clutter.EventType.BUTTON_PRESS ||
+        event.type() === Clutter.EventType.TOUCH_BEGIN) {
+
+        toggleMode();
+        updateIcon();
+        if (getEnableNotifications()) {
+            showModeTween();
+        }
     }
-
 }
 
 
@@ -421,6 +426,7 @@ function enable() {
     Main.panel._rightBox.insert_child_at_index(_trayButton, 0);
 
     _buttonPressEventId = _trayButton.connect('button-press-event', _handleIconClicked);
+    _buttonPressEventId = _trayButton.connect('touch-event', _handleIconClicked);
 
 
     // restore previous state
