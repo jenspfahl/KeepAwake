@@ -1,16 +1,11 @@
 // Author: Jens Pfahl and contributors
 
-const St = imports.gi.St;
-const Main = imports.ui.main;
-const Tweener = imports.tweener.tweener;
-const Gio = imports.gi.Gio;
-const Clutter = imports.gi.Clutter;
+import St from 'gi://St';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import Gio from 'gi://Gio';
+import Clutter from 'gi://Clutter';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-
-const Gettext = imports.gettext.domain('KeepAwake');
-const _ = Gettext.gettext;
+import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const MODE_OFF = 0;
 const MODE_ON = 1;
@@ -243,8 +238,28 @@ function showModeTween() {
 
     Main.uiGroup.add_actor(_tweenText);
 
-
     let monitor = Main.layoutManager.primaryMonitor;
+
+    _tweenText.set_position(monitor.x + Math.floor(monitor.width / 2 - _tweenText.width / 2),
+                      monitor.y + Math.floor(monitor.height / 2 - _tweenText.height / 2));
+
+    _tweenText.ease({
+        opacity: 0,
+        time: 4000,
+        //TODO duration or delay does also not work
+        transition: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => {
+            console.log('%s onComplete');
+            if (_tweenText != null) {
+              Main.uiGroup.remove_actor(_tweenText);
+              _tweenText.destroy();
+              _tweenText = null;
+            }
+        }
+    });
+
+
+    /*let monitor = Main.layoutManager.primaryMonitor;
 
     _tweenText.set_position(monitor.x + Math.floor(monitor.width / 2 - _tweenText.width / 2),
                       monitor.y + Math.floor(monitor.height / 2 - _tweenText.height / 2));
@@ -260,7 +275,7 @@ function showModeTween() {
                            _tweenText = null;
                          }
                      }
-                   });
+                   });*/
 }
 
 
@@ -353,123 +368,117 @@ function _reflectChanges() {
 
 
 
-function init() {
-    ExtensionUtils.initTranslations("KeepAwake");
-}
+export default class KeepAwakeExtension extends Extension {
+    enable() {
+        _trayButton = new St.Bin({ style_class: 'panel-button',
+        reactive: true,
+        can_focus: true,
+        x_expand: true,
+        y_expand: false,
+        track_hover: true });
+        _trayIconOn = new St.Icon({ style_class: 'system-status-icon' });
+        _trayIconOff = new St.Icon({style_class: 'system-status-icon' });
+        _trayIconOnLock = new St.Icon({ style_class: 'system-status-icon' });
+
+        _trayIconOn.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic.svg');
+        _trayIconOff.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic.svg');
+        _trayIconOnLock.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic.svg');
 
 
-function enable() {
-
-    _trayButton = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_expand: true,
-                          y_expand: false,
-                          track_hover: true });
-    _trayIconOn = new St.Icon({ style_class: 'system-status-icon' });
-    _trayIconOff = new St.Icon({style_class: 'system-status-icon' });
-    _trayIconOnLock = new St.Icon({ style_class: 'system-status-icon' });
-
-    _trayIconOn.gicon = Gio.icon_new_for_string(Me.path + '/icons/eye-on-symbolic.svg');
-    _trayIconOff.gicon = Gio.icon_new_for_string(Me.path + '/icons/eye-off-symbolic.svg');
-    _trayIconOnLock.gicon = Gio.icon_new_for_string(Me.path + '/icons/eye-on-lock-symbolic.svg');
-
-
-    // init GSettings
-    _powerSettings = new Gio.Settings({ schema_id: POWER_SCHEMA });
-    _sessionSettings = new Gio.Settings({ schema_id: SESSION_SCHEMA });
-    _screensaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
-    _extensionSettings = ExtensionUtils.getSettings();
+        // init GSettings
+        _powerSettings = new Gio.Settings({ schema_id: POWER_SCHEMA });
+        _sessionSettings = new Gio.Settings({ schema_id: SESSION_SCHEMA });
+        _screensaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
+        _extensionSettings = this.getSettings();
 
 
 
-    _bgTrayColor = _trayButton.get_background_color();
+        _bgTrayColor = _trayButton.get_background_color();
 
 
-    // Before connect to _reflectChanges(), we restore the last saved settings to the user settings, if they are not disturbing.
-    // The reason is, when the user shutdown the system or loggod off, disable() is obviously not called to call disableVideoMode().
-    if (isReadyForWatchingVideo()) {
+        // Before connect to _reflectChanges(), we restore the last saved settings to the user settings, if they are not disturbing.
+        // The reason is, when the user shutdown the system or loggod off, disable() is obviously not called to call disableVideoMode().
+        if (isReadyForWatchingVideo()) {
 
-        // load last saved extension settings
-        _lastPowerDim = _extensionSettings.get_boolean(POWER_DIM_KEY);
-        _lastPowerAc = _extensionSettings.get_string(POWER_AC_KEY);
-        _lastPowerBat = _extensionSettings.get_string(POWER_BAT_KEY);
-        _lastSessionDelay = _extensionSettings.get_int(SESSION_DELAY_KEY);
-        _lastScreensaverActivation = _extensionSettings.get_boolean(SCREENSAVER_ACTIVATION_KEY);
+            // load last saved extension settings
+            _lastPowerDim = _extensionSettings.get_boolean(POWER_DIM_KEY);
+            _lastPowerAc = _extensionSettings.get_string(POWER_AC_KEY);
+            _lastPowerBat = _extensionSettings.get_string(POWER_BAT_KEY);
+            _lastSessionDelay = _extensionSettings.get_int(SESSION_DELAY_KEY);
+            _lastScreensaverActivation = _extensionSettings.get_boolean(SCREENSAVER_ACTIVATION_KEY);
 
-        setPowerDim(_lastPowerDim);
-        setPowerAc(_lastPowerAc);
-        setPowerBat(_lastPowerBat);
-        setSessionDelay(_lastSessionDelay);
-        setScreensaverActivation(_lastScreensaverActivation);
-    }
-    else {
-        // load current user settings
-        _lastPowerDim = getPowerDim();
-        _lastPowerAc = getPowerAc();
-        _lastPowerBat = getPowerBat();
-        _lastSessionDelay = getSessionDelay();
-        _lastScreensaverActivation = getScreensaverActivation();
-    }
-
-
-
-    // reflect settings changes
-    _powerDimEventId = _powerSettings.connect('changed::'+POWER_DIM_KEY,  _reflectChanges);
-    _powerAcEventId = _powerSettings.connect('changed::'+POWER_AC_KEY,  _reflectChanges);
-    _powerBatEventId = _powerSettings.connect('changed::'+POWER_BAT_KEY,  _reflectChanges);
-    _sessionDelayEventId =_sessionSettings.connect('changed::'+SESSION_DELAY_KEY,  _reflectChanges);
-    _screensaverActivationEventId = _screensaverSettings.connect('changed::'+SCREENSAVER_ACTIVATION_KEY,  _reflectChanges);
+            setPowerDim(_lastPowerDim);
+            setPowerAc(_lastPowerAc);
+            setPowerBat(_lastPowerBat);
+            setSessionDelay(_lastSessionDelay);
+            setScreensaverActivation(_lastScreensaverActivation);
+        }
+        else {
+            // load current user settings
+            _lastPowerDim = getPowerDim();
+            _lastPowerAc = getPowerAc();
+            _lastPowerBat = getPowerBat();
+            _lastSessionDelay = getSessionDelay();
+            _lastScreensaverActivation = getScreensaverActivation();
+        }
 
 
-    // enable UI
-    Main.panel._rightBox.insert_child_at_index(_trayButton, 0);
 
-    _buttonPressEventId = _trayButton.connect('button-press-event', _handleIconClicked);
-    _buttonPressEventId = _trayButton.connect('touch-event', _handleIconClicked);
+        // reflect settings changes
+        _powerDimEventId = _powerSettings.connect('changed::'+POWER_DIM_KEY,  _reflectChanges);
+        _powerAcEventId = _powerSettings.connect('changed::'+POWER_AC_KEY,  _reflectChanges);
+        _powerBatEventId = _powerSettings.connect('changed::'+POWER_BAT_KEY,  _reflectChanges);
+        _sessionDelayEventId =_sessionSettings.connect('changed::'+SESSION_DELAY_KEY,  _reflectChanges);
+        _screensaverActivationEventId = _screensaverSettings.connect('changed::'+SCREENSAVER_ACTIVATION_KEY,  _reflectChanges);
 
 
-    // restore previous state
-    if (getStateRestore() === true) {
+        // enable UI
+        Main.panel._rightBox.insert_child_at_index(_trayButton, 0);
+
+        _buttonPressEventId = _trayButton.connect('button-press-event', _handleIconClicked);
+        _buttonPressEventId = _trayButton.connect('touch-event', _handleIconClicked);
+
+
+        // restore previous state
+        if (getStateRestore() === true) {
         enableVideoMode();
         _mode = MODE_ON_LOCK;
+        }
+
+        updateMode();
+        updateIcon();
     }
 
-    updateMode();
-    updateIcon();
+    disable() {
+        disableVideoMode();
 
+        _trayButton.disconnect(_buttonPressEventId);
+        Main.panel._rightBox.remove_child(_trayButton);
+    
+    
+        _powerSettings.disconnect(_powerDimEventId);
+        _powerSettings.disconnect(_powerAcEventId);
+        _powerSettings.disconnect(_powerBatEventId);
+        _sessionSettings.disconnect(_sessionDelayEventId);
+        _screensaverSettings.disconnect(_screensaverActivationEventId);
+    
+        // set extension settings to default
+        _extensionSettings.set_boolean(POWER_DIM_KEY, POWER_DIM_DEFAULT);
+        _extensionSettings.set_string(POWER_AC_KEY, POWER_AC_DEFAULT);
+        _extensionSettings.set_string(POWER_BAT_KEY, POWER_BAT_DEFAULT);
+        _extensionSettings.set_int(SESSION_DELAY_KEY, SESSION_DELAY_DEFAULT);
+        _extensionSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, SCREENSAVER_ACTIVATION_DEFAULT);
+    
+        _trayButton.set_child(null);
+        _trayButton.destroy();
+        _trayButton = null;
+        _trayIconOn.destroy();
+        _trayIconOn = null;
+        _trayIconOff.destroy();
+        _trayIconOff = null;
+        _trayIconOnLock.destroy();
+        _trayIconOnLock = null;
+    }
 }
 
 
-function disable() {
-
-    disableVideoMode();
-
-    _trayButton.disconnect(_buttonPressEventId);
-    Main.panel._rightBox.remove_child(_trayButton);
-
-
-    _powerSettings.disconnect(_powerDimEventId);
-    _powerSettings.disconnect(_powerAcEventId);
-    _powerSettings.disconnect(_powerBatEventId);
-    _sessionSettings.disconnect(_sessionDelayEventId);
-    _screensaverSettings.disconnect(_screensaverActivationEventId);
-
-    // set extension settings to default
-    _extensionSettings.set_boolean(POWER_DIM_KEY, POWER_DIM_DEFAULT);
-    _extensionSettings.set_string(POWER_AC_KEY, POWER_AC_DEFAULT);
-    _extensionSettings.set_string(POWER_BAT_KEY, POWER_BAT_DEFAULT);
-    _extensionSettings.set_int(SESSION_DELAY_KEY, SESSION_DELAY_DEFAULT);
-    _extensionSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, SCREENSAVER_ACTIVATION_DEFAULT);
-
-    _trayButton.set_child(null);
-    _trayButton.destroy();
-    _trayButton = null;
-    _trayIconOn.destroy();
-    _trayIconOn = null;
-    _trayIconOff.destroy();
-    _trayIconOff = null;
-    _trayIconOnLock.destroy();
-    _trayIconOnLock = null;
-
-}
