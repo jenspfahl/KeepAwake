@@ -42,27 +42,31 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
             
         // color picker
 
-
-        // third setting row
-        let colorBackgroundLabel = _('Use this background color');
-
-        appearanceGroup.add(new Gtk.Label({ label: colorBackgroundLabel, wrap: true, sensitive: true,
-                                   margin_bottom: 10, margin_top: 5 }),
-                                    0, 2, 1, 1);
+        let colorBackgroundLabel = new Gtk.Label({ label: _('Use this background color'),
+             margin_bottom: 10, margin_top: 10, margin_start: 10, margin_end: 32});
 
         const rgba = new Gdk.RGBA();
         rgba.parse(window._settings.get_string(BACKGROUND_COLOR));
 
-        let backgroundColor = new Gtk.ColorButton({
+        let colorPicker = new Gtk.ColorButton({
             rgba: rgba,
             show_editor: true,
             use_alpha: true,
             visible: true
         });
-        appearanceGroup.add(backgroundColor);
 
-        backgroundColor.connect('color-set', () => {
-            window._settings.set_string(BACKGROUND_COLOR, backgroundColor.get_rgba().to_string());
+        let bgColorBox = new Gtk.Box();
+        bgColorBox.set_orientation(Gtk.Orientation.HORIZONTAL); 
+        bgColorBox.prepend(colorBackgroundLabel, true, false, 32);
+        bgColorBox.append(colorPicker, true, false, 32);
+
+        const bgColorRow = new Adw.PreferencesRow();
+        bgColorRow.child = bgColorBox;
+        appearanceGroup.add(bgColorRow);
+
+
+        colorPicker.connect('color-set', () => {
+            window._settings.set_string(BACKGROUND_COLOR, colorPicker.get_rgba().to_string());
         });
 
 
