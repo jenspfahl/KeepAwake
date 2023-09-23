@@ -253,9 +253,12 @@ function showModeTween() {
                       monitor.y + Math.floor(monitor.height / 2 - _tweenText.height / 2));
 
     _tweenText.ease({
-        opacity: 0,
-        time: 4,
-        //TODO duration or delay does also not work
+        opacity: 180,
+        time: 0.15,
+        //TODO duration or delay does not work on GnomeOS Nightly 45, if it works, replace with this:
+        /*opacity: 0,
+        duration: 2000,
+        delay: 500,*/
         transition: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
             if (_tweenText != null) {
