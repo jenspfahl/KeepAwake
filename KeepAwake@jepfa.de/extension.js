@@ -56,6 +56,8 @@ const SCREENSAVER_ACTIVATION_DEFAULT = false;
 const NO_COLOR_BACKGROUND = 'no-color-background';
 const ENABLE_NOTIFICATIONS = 'enable-notifications';
 const BACKGROUND_COLOR = 'background-color';
+const USE_BOLD_ICONS = 'use-bold-icons';
+
 
 
 // settings
@@ -68,6 +70,10 @@ let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _butt
 // 1 = video mode on --> system/monitor doesn't suspend when idle
 // 2 = video mode on and locked between restarts of shell/system
 let _mode;
+
+// 0 = default
+// 1 = bold
+let _usedIconSet;
 
 let _lastPowerDim, _lastPowerAc, _lastPowerBat, _lastSessionDelay, _lastScreensaverActivation;
 let _powerDimEventId, _powerAcEventId, _powerBatEventId, _sessionDelayEventId, _screensaverActivationEventId;
@@ -135,6 +141,9 @@ function getEnableNotifications() {
     return _extensionSettings.get_boolean(ENABLE_NOTIFICATIONS);
 }
 
+function isUseBoldIcons() {
+    return _extensionSettings.get_boolean(USE_BOLD_ICONS);
+}
 
 function enableVideoMode() {
 
@@ -245,11 +254,10 @@ function showModeTween() {
 
     _tweenText.ease({
         opacity: 0,
-        time: 4000,
+        time: 4,
         //TODO duration or delay does also not work
         transition: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
-            console.log('%s onComplete');
             if (_tweenText != null) {
               Main.uiGroup.remove_actor(_tweenText);
               _tweenText.destroy();
@@ -259,23 +267,6 @@ function showModeTween() {
     });
 
 
-    /*let monitor = Main.layoutManager.primaryMonitor;
-
-    _tweenText.set_position(monitor.x + Math.floor(monitor.width / 2 - _tweenText.width / 2),
-                      monitor.y + Math.floor(monitor.height / 2 - _tweenText.height / 2));
-
-    Tweener.addTween(_tweenText,
-                     { opacity: 0,
-                       time: 4,
-                       transition: 'easeOutQuad',
-                       onComplete: () => {
-                         if (_tweenText != null) {
-                           Main.uiGroup.remove_actor(_tweenText);
-                           _tweenText.destroy();
-                           _tweenText = null;
-                         }
-                     }
-                   });*/
 }
 
 
@@ -286,9 +277,9 @@ function updateIcon() {
         _trayButton.set_background_color(_bgTrayColor);
       }
       else {
-        _trayButton.set_background_color(color_from_string(getBackgroundColor()));
+        _trayButton.set_background_color(color_from_string(getBackgroundColor())); 
       }
-	    _trayButton.set_child( _mode == MODE_ON ? _trayIconOn: _trayIconOnLock);
+	 _trayButton.set_child( _mode == MODE_ON ? _trayIconOn: _trayIconOnLock);
     }
     else if (_mode == MODE_OFF) {
         _trayButton.set_background_color(_bgTrayColor);
@@ -367,7 +358,6 @@ function _reflectChanges() {
 }
 
 
-
 export default class KeepAwakeExtension extends Extension {
     enable() {
         _trayButton = new St.Bin({ style_class: 'panel-button',
@@ -380,10 +370,6 @@ export default class KeepAwakeExtension extends Extension {
         _trayIconOff = new St.Icon({style_class: 'system-status-icon' });
         _trayIconOnLock = new St.Icon({ style_class: 'system-status-icon' });
 
-        _trayIconOn.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic.svg');
-        _trayIconOff.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic.svg');
-        _trayIconOnLock.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic.svg');
-
 
         // init GSettings
         _powerSettings = new Gio.Settings({ schema_id: POWER_SCHEMA });
@@ -391,7 +377,16 @@ export default class KeepAwakeExtension extends Extension {
         _screensaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
         _extensionSettings = this.getSettings();
 
-
+        if (isUseBoldIcons()) {
+            _trayIconOn.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic_bold.svg');
+            _trayIconOff.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic_bold.svg');
+            _trayIconOnLock.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic_bold.svg');
+        }
+        else {
+            _trayIconOn.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic.svg');
+            _trayIconOff.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic.svg');
+            _trayIconOnLock.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic.svg');
+        }
 
         _bgTrayColor = _trayButton.get_background_color();
 
@@ -441,8 +436,8 @@ export default class KeepAwakeExtension extends Extension {
 
         // restore previous state
         if (getStateRestore() === true) {
-        enableVideoMode();
-        _mode = MODE_ON_LOCK;
+            enableVideoMode();
+            _mode = MODE_ON_LOCK;
         }
 
         updateMode();
