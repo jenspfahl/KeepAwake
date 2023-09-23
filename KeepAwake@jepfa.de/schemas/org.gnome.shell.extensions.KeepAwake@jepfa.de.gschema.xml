@@ -45,5 +45,10 @@
       <summary>background color of icon if active</summary>
       <description>Choose background color of icon if keep awake</description>
     </key>
+    <key name="use-bold-icons" type="b">
+      <default>false</default>
+      <summary>use bold icons</summary>
+      <description>Use icons that fits into Gnome better</description>
+    </key>
   </schema>
 </schemalist>
