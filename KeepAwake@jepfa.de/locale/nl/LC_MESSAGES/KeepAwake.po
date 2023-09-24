@@ -1,16 +1,16 @@
 # extension.js
 
 msgid "VIDEO_MODE_ALREADY_CONFIGURED"
-msgstr "Votre bureau, écran de veille et les options de gestion d'énergie sont déjà définis pour rester éveillé !"
+msgstr "Uw bureaublad, schermbeveiliging en energievoorkeuren staan al ingesteld om niet in de slaapstand te gaan."
 
 msgid "COMPUTER_KEEPS_AWAKE"
-msgstr "L'ordinateur reste éveillé."
+msgstr "De computer wordt niet in de slaapstand gezet."
 
 msgid "COMPUTER_KEEPS_AWAKE_PERSISTENT"
-msgstr "L'ordinateur reste éveillé, même après les redémarrages."
+msgstr "Computer keeps awake, even after restarts."
 
 msgid "COMPUTER_CAN_FALL_ASLEEP"
-msgstr "L'ordinateur peut de nouveau être en veille."
+msgstr "De computer wordt in de slaapstand gezet."
 
 
 # prefs.js
@@ -43,7 +43,6 @@ msgstr "Show notifications when mode been changed"
 
 msgid "DESC_SHOW_NOTIFICATION_WHEN_CLICKED"
 msgstr "Show a short message when the mode has been changed by clicking on the icon."
-
 
 
 

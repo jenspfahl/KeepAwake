@@ -14,14 +14,11 @@ const USE_BOLD_ICONS = 'use-bold-icons';
 export default class KeepAwakePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const page = new Adw.PreferencesPage({
-            title: _('General'),
-            icon_name: 'dialog-information-symbolic',
         });
         window.add(page);
 
         const appearanceGroup = new Adw.PreferencesGroup({
-            title: _('Appearance'),
-            description: _('Configure the appearance of KeepAwake!'),
+            title: _('GROUP_APPEARANCE'),
         });
         page.add(appearanceGroup);
             
@@ -29,8 +26,8 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
         // use colored icon for video mode
 
         const colorizedIconRow = new Adw.SwitchRow({
-            title: _("Colorized enabled icon"),
-            subtitle: _('Show background-colored icon if keep awake is enabled'),
+            title: _('TITLE_COLORIZED_ICON_BG'),
+            subtitle: _('DESC_COLORIZE_ICON_BG_IF_KEEP_AWAKE'),
         });
         appearanceGroup.add(colorizedIconRow);
 
@@ -42,7 +39,7 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
             
         // color picker
 
-        let colorBackgroundLabel = new Gtk.Label({ label: _('Use this background color'),
+        let colorBackgroundLabel = new Gtk.Label({ label: _('TITLE_COLORIZE_ICON_BGWITH_THIS_COLOR'),
              margin_bottom: 10, margin_top: 10, margin_start: 10, margin_end: 32});
 
         const rgba = new Gdk.RGBA();
@@ -73,8 +70,8 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
         // icon set
 
         const iconSetRow = new Adw.SwitchRow({
-            title: _("Use alternative icons"),
-            subtitle: _('Use bold icons which may be more appealing. A change requires a relaunch of Gnome to take in effect!'),
+            title: _('DESC_USE_ALTERNATIVE_ICON_SET'),
+            subtitle: _('TITLE_USE_BOLD_ICONS_REQUIRES_RELAUNCH'),
         });
         appearanceGroup.add(iconSetRow);
 
@@ -88,13 +85,13 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
         // Notifications    
 
         const notificationsGroup = new Adw.PreferencesGroup({
-            title: _('Notifications'),
+            title: _('GROUP_NOTIFICATIONS'),
         });
         page.add(notificationsGroup);
 
         const showNotificationsRow = new Adw.SwitchRow({
-            title: _("Show notifications on mode change"),
-            subtitle: _("Show a short notification when the mode has changed by clicking on the icon."),
+            title: _('TITLE_SHOW_NOTIFICATIONS'),
+            subtitle: _('DESC_SHOW_NOTIFICATION_WHEN_CLICKED'),
         });
         notificationsGroup.add(showNotificationsRow);
 

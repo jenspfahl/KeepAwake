@@ -199,7 +199,7 @@ function toggleMode() {
         disableVideoMode();
         if (isReadyForWatchingVideo()) {
             // there are all options ready for watching videos at the beginning --> mode keeps "on"
-            Main.notify(_("Your desktop, screensaver and power options are already fine to keep awake!"));
+            Main.notify(_("VIDEO_MODE_ALREADY_CONFIGURED"));
             _mode = MODE_ON; // but we switch off the persistance
             setStateRestore(false);
         }
@@ -236,13 +236,13 @@ function showModeTween() {
     let _tweenText;
 
     if (_mode == MODE_ON) {
-        _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake.") });
+        _tweenText = new St.Label({ style_class: 'video-label-on', text: _("COMPUTER_KEEPS_AWAKE") });
     }
     else if (_mode == MODE_ON_LOCK) {
-	     _tweenText = new St.Label({ style_class: 'video-label-on', text: _("Computer keeps awake, even after restarts.") });
+	     _tweenText = new St.Label({ style_class: 'video-label-on', text: _("COMPUTER_KEEPS_AWAKE_PERSISTENT") });
     }
     else if (_mode == MODE_OFF) {
-        _tweenText = new St.Label({ style_class: 'video-label-off', text: _("Computer can fall asleep.") });
+        _tweenText = new St.Label({ style_class: 'video-label-off', text: _("COMPUTER_CAN_FALL_ASLEEP") });
     }
 
     Main.uiGroup.add_actor(_tweenText);

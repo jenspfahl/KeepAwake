@@ -1,50 +1,45 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-26 08:23+0200\n"
-"PO-Revision-Date: 2016-08-26 08:25+0200\n"
-"Language: de\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Jens Pfahl <jepfa@mailbox.org>\n"
-"Language-Team: \n"
-"X-Generator: Poedit 1.8.7.1\n"
+# extension.js
 
-#: extension.js:169
-msgid "Your desktop, screensaver and power options are already fine to keep awake!"
+msgid "VIDEO_MODE_ALREADY_CONFIGURED"
 msgstr "Desktop, Bildschirmschoner und Energiesparoptionen sind bereits auf wach bleiben gestellt!"
 
-#: extension.js:224
-msgid "Computer keeps awake."
+msgid "COMPUTER_KEEPS_AWAKE"
 msgstr "Rechner bleibt wach."
 
-#: extension.js:227
-msgid "Computer keeps awake, even after restarts."
+msgid "COMPUTER_KEEPS_AWAKE_PERSISTENT"
 msgstr "Rechner bleibt wach, auch nach Neustart."
 
-#: extension.js:230
-msgid "Computer can fall asleep."
+msgid "COMPUTER_CAN_FALL_ASLEEP"
 msgstr "Rechner kann einschlafen."
 
 
+# prefs.js
 
-#: prefs.js:43
-msgid "Show notifications on mode change"
-msgstr "Zeige Benachrichtigungen wenn Modus geändert wird"
+msgid "GROUP_APPEARANCE"
+msgstr "Aussehen"
 
+msgid "TITLE_COLORIZED_ICON_BG"
+msgstr "Farblicher Symbol-Hintergrund"
 
-#: prefs.js:58
-msgid "Show background-colored icon if keep awake is enabled"
+msgid "DESC_COLORIZE_ICON_BG_IF_KEEP_AWAKE"
 msgstr "Zeige Symbol mit Hintergrundfarbe wenn Rechner wach bleibt"
 
-
-#: prefs.js:75
-msgid "Use this background color"
+msgid "TITLE_COLORIZE_ICON_BGWITH_THIS_COLOR"
 msgstr "Nutze diese Hintergrundfarbe"
+
+msgid "DESC_USE_ALTERNATIVE_ICON_SET"
+msgstr "Verwende alternative Symbole"
+
+msgid "TITLE_USE_BOLD_ICONS_REQUIRES_RELAUNCH"
+msgstr "Verwende dickere Symbole welche besser passen könnten. Diese Änderung erfordert einen Gnome-Neustart!"
+
+
+msgid "GROUP_NOTIFICATIONS"
+msgstr "Benachrichtigungen"
+
+msgid "TITLE_SHOW_NOTIFICATIONS"
+msgstr "Zeige Benachrichtigungen wenn Modus geändert wird"
+
+msgid "DESC_SHOW_NOTIFICATION_WHEN_CLICKED"
+msgstr "Zeige eine kurze Nachricht wenn der Modus durch ein Klick auf das Symbol geändert wurde."
+
