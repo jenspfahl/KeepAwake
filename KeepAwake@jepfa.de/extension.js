@@ -459,6 +459,9 @@ export default class KeepAwakeExtension extends Extension {
         _powerSettings.disconnect(_powerBatEventId);
         _sessionSettings.disconnect(_sessionDelayEventId);
         _screensaverSettings.disconnect(_screensaverActivationEventId);
+        _screensaverSettings = null;
+        _powerSettings = null;
+        _sessionSettings = null;
     
         // set extension settings to default
         _extensionSettings.set_boolean(POWER_DIM_KEY, POWER_DIM_DEFAULT);
@@ -476,6 +479,7 @@ export default class KeepAwakeExtension extends Extension {
         _trayIconOff = null;
         _trayIconOnLock.destroy();
         _trayIconOnLock = null;
+
     }
 }
 

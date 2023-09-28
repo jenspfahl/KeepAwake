@@ -75,7 +75,6 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
         });
         appearanceGroup.add(iconSetRow);
 
-        window._settings = this.getSettings();
         window._settings.bind(USE_BOLD_ICONS, iconSetRow, 'active',
             Gio.SettingsBindFlags.DEFAULT);
 
