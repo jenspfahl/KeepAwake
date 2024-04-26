@@ -48,15 +48,18 @@ const SESSION_DELAY_KEY			= 'idle-delay';
 const SCREENSAVER_SCHEMA		= 'org.gnome.desktop.screensaver';
 const SCREENSAVER_ACTIVATION_KEY	= 'idle-activation-enabled';
 
-const POWER_DIM_DEFAULT = false;
-const POWER_AC_DEFAULT = 'nothing';
-const POWER_BAT_DEFAULT = 'nothing';
-const SESSION_DELAY_DEFAULT = 0;
-const SCREENSAVER_ACTIVATION_DEFAULT = false;
+const POWER_DIM_VIDEO_MODE = false;
+const POWER_AC_VIDEO_MODE = 'nothing';
+const POWER_BAT_VIDEO_MODE = 'nothing';
+
+const SESSION_DELAY_VIDEO_MODE = 0;
+const SCREENSAVER_ACTIVATION_VIDEO_MODE = false;
+
 const NO_COLOR_BACKGROUND = 'no-color-background';
 const ENABLE_NOTIFICATIONS = 'enable-notifications';
 const BACKGROUND_COLOR = 'background-color';
 const USE_BOLD_ICONS = 'use-bold-icons';
+const KEEP_AWAKE_WHEN_LOCKED = 'keep-awake-when-locked';
 
 
 
@@ -145,22 +148,26 @@ function isUseBoldIcons() {
     return _extensionSettings.get_boolean(USE_BOLD_ICONS);
 }
 
+function isKeepAwakeWhenLocked() {
+    return _extensionSettings.get_boolean(KEEP_AWAKE_WHEN_LOCKED);
+}
+
 function enableVideoMode() {
 
     _lastPowerDim = getPowerDim();
-    setPowerDim(POWER_DIM_DEFAULT);
+    setPowerDim(POWER_DIM_VIDEO_MODE);
 
     _lastPowerAc = getPowerAc();
-    setPowerAc(POWER_AC_DEFAULT);
+    setPowerAc(POWER_AC_VIDEO_MODE);
 
     _lastPowerBat = getPowerBat();
-    setPowerBat(POWER_BAT_DEFAULT);
+    setPowerBat(POWER_BAT_VIDEO_MODE);
 
     _lastSessionDelay = getSessionDelay();
-    setSessionDelay(SESSION_DELAY_DEFAULT);
+    setSessionDelay(SESSION_DELAY_VIDEO_MODE);
 
     _lastScreensaverActivation = getScreensaverActivation();
-    setScreensaverActivation(SCREENSAVER_ACTIVATION_DEFAULT);
+    setScreensaverActivation(SCREENSAVER_ACTIVATION_VIDEO_MODE);
 
 }
 
@@ -177,11 +184,11 @@ function disableVideoMode() {
 
 
 function isReadyForWatchingVideo() {
-    return getPowerDim() == POWER_DIM_DEFAULT
-        && getPowerAc() == POWER_AC_DEFAULT
-	&& getPowerBat() == POWER_BAT_DEFAULT
-	&& getSessionDelay() == SESSION_DELAY_DEFAULT
-	&& getScreensaverActivation() == SCREENSAVER_ACTIVATION_DEFAULT;
+    return getPowerDim() == POWER_DIM_VIDEO_MODE
+        && getPowerAc() == POWER_AC_VIDEO_MODE
+	&& getPowerBat() == POWER_BAT_VIDEO_MODE
+	&& getSessionDelay() == SESSION_DELAY_VIDEO_MODE
+	&& getScreensaverActivation() == SCREENSAVER_ACTIVATION_VIDEO_MODE;
 }
 
 
@@ -253,12 +260,9 @@ function showModeTween() {
                       monitor.y + Math.floor(monitor.height / 2 - _tweenText.height / 2));
 
     _tweenText.ease({
-        opacity: 180,
-        time: 0.15,
-        //TODO duration or delay does not work on GnomeOS Nightly 45, if it works, replace with this:
-        /*opacity: 0,
-        duration: 2000,
-        delay: 500,*/
+        opacity: 0,
+        duration: 1000,
+        delay: 500,
         transition: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
             if (_tweenText != null) {
@@ -326,23 +330,23 @@ function _reflectChanges() {
     // we save the reflective user settings or the extension settings,
     // because when this extension terminated without calling disable(), we can restore the original user settings
 
-    if (getPowerDim() != POWER_DIM_DEFAULT) { // the user changed the settings, we came probably not from enableVideoMode()
+    if (getPowerDim() != POWER_DIM_VIDEO_MODE) { // the user changed the settings, we came probably not from enableVideoMode()
         _lastPowerDim = getPowerDim;
     }
 
-    if (getPowerAc() != POWER_AC_DEFAULT) { // the user changed the settings, we came probably not from enableVideoMode()
+    if (getPowerAc() != POWER_AC_VIDEO_MODE) { // the user changed the settings, we came probably not from enableVideoMode()
         _lastPowerAc = getPowerAc();
     }
 
-    if (getPowerBat() != POWER_BAT_DEFAULT) { // the user changed the settings, we came probably not from enableVideoMode()
+    if (getPowerBat() != POWER_BAT_VIDEO_MODE) { // the user changed the settings, we came probably not from enableVideoMode()
         _lastPowerBat = getPowerBat();
     }
 
-    if (getSessionDelay() != SESSION_DELAY_DEFAULT) { // the user changed the settings, we came probably not from enableVideoMode()
+    if (getSessionDelay() != SESSION_DELAY_VIDEO_MODE) { // the user changed the settings, we came probably not from enableVideoMode()
         _lastSessionDelay = getSessionDelay();
     }
 
-    if (getScreensaverActivation() != SCREENSAVER_ACTIVATION_DEFAULT) { // the user changed the settings, we came probably not from enableVideoMode()
+    if (getScreensaverActivation() != SCREENSAVER_ACTIVATION_VIDEO_MODE) { // the user changed the settings, we came probably not from enableVideoMode()
         _lastScreensaverActivation = getScreensaverActivation();
     }
 
@@ -423,11 +427,11 @@ export default class KeepAwakeExtension extends Extension {
 
 
         // reflect settings changes
-        _powerDimEventId = _powerSettings.connect('changed::'+POWER_DIM_KEY,  _reflectChanges);
-        _powerAcEventId = _powerSettings.connect('changed::'+POWER_AC_KEY,  _reflectChanges);
-        _powerBatEventId = _powerSettings.connect('changed::'+POWER_BAT_KEY,  _reflectChanges);
-        _sessionDelayEventId =_sessionSettings.connect('changed::'+SESSION_DELAY_KEY,  _reflectChanges);
-        _screensaverActivationEventId = _screensaverSettings.connect('changed::'+SCREENSAVER_ACTIVATION_KEY,  _reflectChanges);
+        _powerDimEventId = _powerSettings.connect('changed::' + POWER_DIM_KEY,  _reflectChanges);
+        _powerAcEventId = _powerSettings.connect('changed::' + POWER_AC_KEY,  _reflectChanges);
+        _powerBatEventId = _powerSettings.connect('changed::' + POWER_BAT_KEY,  _reflectChanges);
+        _sessionDelayEventId =_sessionSettings.connect('changed::' + SESSION_DELAY_KEY,  _reflectChanges);
+        _screensaverActivationEventId = _screensaverSettings.connect('changed::' + SCREENSAVER_ACTIVATION_KEY,  _reflectChanges);
 
 
         // enable UI
@@ -448,7 +452,17 @@ export default class KeepAwakeExtension extends Extension {
     }
 
     disable() {
-        disableVideoMode();
+
+        if (!isKeepAwakeWhenLocked()) {
+            disableVideoMode();
+
+            _extensionSettings.set_boolean(POWER_DIM_KEY, POWER_DIM_VIDEO_MODE);
+            _extensionSettings.set_string(POWER_AC_KEY, POWER_AC_VIDEO_MODE);
+            _extensionSettings.set_string(POWER_BAT_KEY, POWER_BAT_VIDEO_MODE);
+            _extensionSettings.set_int(SESSION_DELAY_KEY, SESSION_DELAY_VIDEO_MODE);
+            _extensionSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, SCREENSAVER_ACTIVATION_VIDEO_MODE);
+        }
+        
 
         _trayButton.disconnect(_buttonPressEventId);
         Main.panel._rightBox.remove_child(_trayButton);
@@ -462,13 +476,6 @@ export default class KeepAwakeExtension extends Extension {
         _screensaverSettings = null;
         _powerSettings = null;
         _sessionSettings = null;
-    
-        // set extension settings to default
-        _extensionSettings.set_boolean(POWER_DIM_KEY, POWER_DIM_DEFAULT);
-        _extensionSettings.set_string(POWER_AC_KEY, POWER_AC_DEFAULT);
-        _extensionSettings.set_string(POWER_BAT_KEY, POWER_BAT_DEFAULT);
-        _extensionSettings.set_int(SESSION_DELAY_KEY, SESSION_DELAY_DEFAULT);
-        _extensionSettings.set_boolean(SCREENSAVER_ACTIVATION_KEY, SCREENSAVER_ACTIVATION_DEFAULT);
     
         _trayButton.set_child(null);
         _trayButton.destroy();

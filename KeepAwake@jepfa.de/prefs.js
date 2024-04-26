@@ -10,6 +10,7 @@ const NO_COLOR_BACKGROUND = 'no-color-background';
 const ENABLE_NOTIFICATIONS = 'enable-notifications';
 const BACKGROUND_COLOR = 'background-color';
 const USE_BOLD_ICONS = 'use-bold-icons';
+const KEEP_AWAKE_WHEN_LOCKED = 'keep-awake-when-locked';
 
 export default class KeepAwakePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
@@ -97,7 +98,23 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
         window._settings.bind(ENABLE_NOTIFICATIONS, showNotificationsRow, 'active',
             Gio.SettingsBindFlags.DEFAULT);
 
-        
+
+
+        // Behaviour
+
+        const behaviourGroup = new Adw.PreferencesGroup({
+            title: _('GROUP_BEHAVIOUR'),
+        });
+        page.add(behaviourGroup);
+
+        const keepAwakeWhenLockedRow = new Adw.SwitchRow({
+            title: _('TITLE_KEEP_AWAKE_WHEN_LOCKED'),
+            subtitle: _('DESC_KEEP_AWAKE_WHEN_LOCKED'),
+        });
+        behaviourGroup.add(keepAwakeWhenLockedRow);
+
+        window._settings.bind(KEEP_AWAKE_WHEN_LOCKED, keepAwakeWhenLockedRow, 'active',
+            Gio.SettingsBindFlags.DEFAULT);
     }
 }
 

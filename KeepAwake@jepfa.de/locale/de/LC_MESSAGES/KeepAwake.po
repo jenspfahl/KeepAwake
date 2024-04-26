@@ -1,3 +1,8 @@
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
 # extension.js
 
 msgid "VIDEO_MODE_ALREADY_CONFIGURED"
@@ -42,4 +47,15 @@ msgstr "Zeige Benachrichtigungen wenn Modus geändert wird"
 
 msgid "DESC_SHOW_NOTIFICATION_WHEN_CLICKED"
 msgstr "Zeige eine kurze Nachricht wenn der Modus durch ein Klick auf das Symbol geändert wurde."
+
+
+msgid "GROUP_BEHAVIOUR"
+msgstr "Verhalten"
+
+msgid "TITLE_KEEP_AWAKE_WHEN_LOCKED"
+msgstr "Bleibe wach wenn Bildschirm gesperrt"
+
+msgid "DESC_KEEP_AWAKE_WHEN_LOCKED"
+msgstr "Der Rechner bleibt auch wach, wenn der Sperrbildschirm aktiv ist (und der Rechner wach bleiben soll)."
+
 

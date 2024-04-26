@@ -50,5 +50,10 @@
       <summary>use bold icons</summary>
       <description>Use icons that fits into Gnome better</description>
     </key>
+    <key name="keep-awake-when-locked" type="b">
+      <default>false</default>
+      <summary>keep awake even when screen is locked</summary>
+      <description>If Keep Awake is enabled, this also applies if the screen is locked</description>
+    </key>
   </schema>
 </schemalist>

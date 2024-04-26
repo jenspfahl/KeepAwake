@@ -1,3 +1,8 @@
+msgid ""
+msgstr ""
+"Language: nl\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
 # extension.js
 
 msgid "VIDEO_MODE_ALREADY_CONFIGURED"
@@ -44,5 +49,15 @@ msgstr "Show notifications when mode been changed"
 msgid "DESC_SHOW_NOTIFICATION_WHEN_CLICKED"
 msgstr "Show a short message when the mode has been changed by clicking on the icon."
 
+
+
+msgid "GROUP_BEHAVIOUR"
+msgstr "Behaviour"
+
+msgid "TITLE_KEEP_AWAKE_WHEN_LOCKED"
+msgstr "Keep awake when desktop is locked"
+
+msgid "DESC_KEEP_AWAKE_WHEN_LOCKED"
+msgstr "Computer keeps awake even if the desktop is locked (and Keep Awake is active)."
 
 
