@@ -55,5 +55,11 @@
       <summary>keep awake even when screen is locked</summary>
       <description>If Keep Awake is enabled, this also applies if the screen is locked</description>
     </key>
+
+    <key name="allow-screen-dimm" type="b">
+      <default>false</default>
+      <summary>Allow screen dimming / turning of although Keep Awake is activated</summary>
+      <description>If Keep Awake is enabled, the computer can dimm or turn of the screen, so only hibernate / suspension is prevented</description>
+    </key>
   </schema>
 </schemalist>

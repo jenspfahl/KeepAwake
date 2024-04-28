@@ -11,6 +11,8 @@ const ENABLE_NOTIFICATIONS = 'enable-notifications';
 const BACKGROUND_COLOR = 'background-color';
 const USE_BOLD_ICONS = 'use-bold-icons';
 const KEEP_AWAKE_WHEN_LOCKED = 'keep-awake-when-locked';
+const ALLOW_SCREEN_DIMM = 'allow-screen-dimm';
+
 
 export default class KeepAwakePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
@@ -55,8 +57,8 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
 
         let bgColorBox = new Gtk.Box();
         bgColorBox.set_orientation(Gtk.Orientation.HORIZONTAL); 
-        bgColorBox.prepend(colorBackgroundLabel, true, false, 32);
-        bgColorBox.append(colorPicker, true, false, 32);
+        bgColorBox.prepend(colorBackgroundLabel);
+        bgColorBox.append(colorPicker);
 
         const bgColorRow = new Adw.PreferencesRow();
         bgColorRow.child = bgColorBox;
@@ -115,6 +117,16 @@ export default class KeepAwakePreferences extends ExtensionPreferences {
 
         window._settings.bind(KEEP_AWAKE_WHEN_LOCKED, keepAwakeWhenLockedRow, 'active',
             Gio.SettingsBindFlags.DEFAULT);
+
+
+        const allowScreenDimmRow = new Adw.SwitchRow({
+            title: _('TITLE_ALLOW_SCREEN_DIMM'),
+            subtitle: _('DESC_ALLOW_SCREEN_DIMM'),
+        });
+        behaviourGroup.add(allowScreenDimmRow);
+
+        window._settings.bind(ALLOW_SCREEN_DIMM, allowScreenDimmRow, 'active',
+            Gio.SettingsBindFlags.DEFAULT);    
     }
 }
 

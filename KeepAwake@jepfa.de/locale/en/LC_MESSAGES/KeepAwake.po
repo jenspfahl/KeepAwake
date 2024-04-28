@@ -59,3 +59,10 @@ msgstr "Keep awake when desktop is locked"
 msgid "DESC_KEEP_AWAKE_WHEN_LOCKED"
 msgstr "Computer keeps awake even if the desktop is locked (and Keep Awake is active)."
 
+
+msgid "TITLE_ALLOW_SCREEN_DIMM"
+msgstr "Allow screen dimming"
+
+msgid "DESC_ALLOW_SCREEN_DIMM"
+msgstr "Allow that screen can be dimmed or turned off, although Keep Awake is activated. (Only hibernate / suspension will be prevented.)"
+

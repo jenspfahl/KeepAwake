@@ -40,13 +40,12 @@ const POWER_SCHEMA			= 'org.gnome.settings-daemon.plugins.power';
 const POWER_DIM_KEY			= 'idle-dim';
 const POWER_AC_KEY			= 'sleep-inactive-ac-type';
 const POWER_BAT_KEY			= 'sleep-inactive-battery-type';
-const RESTORE_STATE_KEY			= 'restore-state';
 
 const SESSION_SCHEMA			= 'org.gnome.desktop.session';
 const SESSION_DELAY_KEY			= 'idle-delay';
 
 const SCREENSAVER_SCHEMA		= 'org.gnome.desktop.screensaver';
-const SCREENSAVER_ACTIVATION_KEY	= 'idle-activation-enabled';
+const SCREENSAVER_ACTIVATION_KEY	= 'idle-activation-enabled'; 
 
 const POWER_DIM_VIDEO_MODE = false;
 const POWER_AC_VIDEO_MODE = 'nothing';
@@ -55,11 +54,14 @@ const POWER_BAT_VIDEO_MODE = 'nothing';
 const SESSION_DELAY_VIDEO_MODE = 0;
 const SCREENSAVER_ACTIVATION_VIDEO_MODE = false;
 
+const RESTORE_STATE_KEY			= 'restore-state';
+
 const NO_COLOR_BACKGROUND = 'no-color-background';
 const ENABLE_NOTIFICATIONS = 'enable-notifications';
 const BACKGROUND_COLOR = 'background-color';
 const USE_BOLD_ICONS = 'use-bold-icons';
 const KEEP_AWAKE_WHEN_LOCKED = 'keep-awake-when-locked';
+const ALLOW_SCREEN_DIMM = 'allow-screen-dimm';
 
 
 
@@ -152,6 +154,10 @@ function isKeepAwakeWhenLocked() {
     return _extensionSettings.get_boolean(KEEP_AWAKE_WHEN_LOCKED);
 }
 
+function isAllowScreenDimm() {
+    return _extensionSettings.get_boolean(ALLOW_SCREEN_DIMM);
+}
+
 function enableVideoMode() {
 
     _lastPowerDim = getPowerDim();
@@ -163,11 +169,17 @@ function enableVideoMode() {
     _lastPowerBat = getPowerBat();
     setPowerBat(POWER_BAT_VIDEO_MODE);
 
-    _lastSessionDelay = getSessionDelay();
-    setSessionDelay(SESSION_DELAY_VIDEO_MODE);
+    if (isAllowScreenDimm()) {
+        setSessionDelay(_lastSessionDelay);
+        setScreensaverActivation(_lastScreensaverActivation);
+    } 
+    else {
+        _lastSessionDelay = getSessionDelay();
+        setSessionDelay(SESSION_DELAY_VIDEO_MODE);
 
-    _lastScreensaverActivation = getScreensaverActivation();
-    setScreensaverActivation(SCREENSAVER_ACTIVATION_VIDEO_MODE);
+        _lastScreensaverActivation = getScreensaverActivation();
+        setScreensaverActivation(SCREENSAVER_ACTIVATION_VIDEO_MODE);
+    }
 
 }
 

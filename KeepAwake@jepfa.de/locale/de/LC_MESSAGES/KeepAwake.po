@@ -59,3 +59,10 @@ msgid "DESC_KEEP_AWAKE_WHEN_LOCKED"
 msgstr "Der Rechner bleibt auch wach, wenn der Sperrbildschirm aktiv ist (und der Rechner wach bleiben soll)."
 
 
+msgid "TITLE_ALLOW_SCREEN_DIMM"
+msgstr "Erlaube Bildschirmabdunklung"
+
+msgid "DESC_ALLOW_SCREEN_DIMM"
+msgstr "Erlaube, dass der Bildschirm abgedunkelt oder abgeschaltet wird, obwohl der Rechner wach bleiben soll. (Nur Bereitschaftsmodus wird verhindert)"
+
+
