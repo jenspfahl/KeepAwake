@@ -36,7 +36,7 @@ msgid "DESC_USE_ALTERNATIVE_ICON_SET"
 msgstr "Verwende alternative Symbole"
 
 msgid "TITLE_USE_BOLD_ICONS_REQUIRES_RELAUNCH"
-msgstr "Verwende dickere Symbole welche besser passen könnten. Diese Änderung erfordert einen Gnome-Neustart!"
+msgstr "Verwende dickere Symbole welche besser passen könnten."
 
 
 msgid "GROUP_NOTIFICATIONS"

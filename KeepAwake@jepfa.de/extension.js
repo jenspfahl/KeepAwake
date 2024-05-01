@@ -70,6 +70,9 @@ let _powerSettings, _sessionSettings, _screensaverSettings, _extensionSettings;
 
 // IU components
 let _trayButton, _bgTrayColor, _trayIconOn, _trayIconOff, _trayIconOnLock, _buttonPressEventId;
+let _iconOn, _iconOff, _iconOnLock;
+let _iconOnBold, _iconOffBold, _iconOnLockBold;
+
 
 // 0 = video mode off --> system/monitor (possibly) suspends when idle
 // 1 = video mode on --> system/monitor doesn't suspend when idle
@@ -82,6 +85,7 @@ let _usedIconSet;
 
 let _lastPowerDim, _lastPowerAc, _lastPowerBat, _lastSessionDelay, _lastScreensaverActivation;
 let _powerDimEventId, _powerAcEventId, _powerBatEventId, _sessionDelayEventId, _screensaverActivationEventId;
+let _useBoldIconsEventId, _noColorBackgroundEventId, _backgroundColorEventId, _allowScreenDimmEventId;
 
 
 
@@ -158,17 +162,7 @@ function isAllowScreenDimm() {
     return _extensionSettings.get_boolean(ALLOW_SCREEN_DIMM);
 }
 
-function enableVideoMode() {
-
-    _lastPowerDim = getPowerDim();
-    setPowerDim(POWER_DIM_VIDEO_MODE);
-
-    _lastPowerAc = getPowerAc();
-    setPowerAc(POWER_AC_VIDEO_MODE);
-
-    _lastPowerBat = getPowerBat();
-    setPowerBat(POWER_BAT_VIDEO_MODE);
-
+function _updateScreenDimm() {
     if (isAllowScreenDimm()) {
         setSessionDelay(_lastSessionDelay);
         setScreensaverActivation(_lastScreensaverActivation);
@@ -180,6 +174,27 @@ function enableVideoMode() {
         _lastScreensaverActivation = getScreensaverActivation();
         setScreensaverActivation(SCREENSAVER_ACTIVATION_VIDEO_MODE);
     }
+}
+
+function _handleScreenDimmChanged() {
+    if (isReadyForWatchingVideo()) {
+        _updateScreenDimm();
+    }
+}
+
+function enableVideoMode() {
+
+    _lastPowerDim = getPowerDim();
+    setPowerDim(POWER_DIM_VIDEO_MODE);
+
+    _lastPowerAc = getPowerAc();
+    setPowerAc(POWER_AC_VIDEO_MODE);
+
+    _lastPowerBat = getPowerBat();
+    setPowerBat(POWER_BAT_VIDEO_MODE);
+
+    _updateScreenDimm();
+
 
 }
 
@@ -196,11 +211,18 @@ function disableVideoMode() {
 
 
 function isReadyForWatchingVideo() {
-    return getPowerDim() == POWER_DIM_VIDEO_MODE
-        && getPowerAc() == POWER_AC_VIDEO_MODE
-	&& getPowerBat() == POWER_BAT_VIDEO_MODE
-	&& getSessionDelay() == SESSION_DELAY_VIDEO_MODE
-	&& getScreensaverActivation() == SCREENSAVER_ACTIVATION_VIDEO_MODE;
+    if (isAllowScreenDimm()) {
+        return getPowerDim() == POWER_DIM_VIDEO_MODE
+            && getPowerAc() == POWER_AC_VIDEO_MODE
+	        && getPowerBat() == POWER_BAT_VIDEO_MODE;
+    }
+    else {
+        return getPowerDim() == POWER_DIM_VIDEO_MODE
+            && getPowerAc() == POWER_AC_VIDEO_MODE
+	        && getPowerBat() == POWER_BAT_VIDEO_MODE
+	        && getSessionDelay() == SESSION_DELAY_VIDEO_MODE
+	        && getScreensaverActivation() == SCREENSAVER_ACTIVATION_VIDEO_MODE;
+    }
 }
 
 
@@ -289,7 +311,24 @@ function showModeTween() {
 }
 
 
+function _reassignIcons() {
+    if (isUseBoldIcons()) {
+        _trayIconOn.gicon = _iconOnBold;
+        _trayIconOff.gicon = _iconOffBold;
+        _trayIconOnLock.gicon = _iconOnLockBold;
+    }
+    else {
+        _trayIconOn.gicon = _iconOn;
+        _trayIconOff.gicon = _iconOff;
+        _trayIconOnLock.gicon = _iconOnLock;
+    }
+}
+
+
+
 function updateIcon() {
+
+    _reassignIcons();
 
     if (_mode == MODE_ON || _mode == MODE_ON_LOCK) {
       if (getNoColorBackground()) {
@@ -376,7 +415,6 @@ function _reflectChanges() {
 
 }
 
-
 export default class KeepAwakeExtension extends Extension {
     enable() {
         _trayButton = new St.Bin({ style_class: 'panel-button',
@@ -396,16 +434,13 @@ export default class KeepAwakeExtension extends Extension {
         _screensaverSettings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
         _extensionSettings = this.getSettings();
 
-        if (isUseBoldIcons()) {
-            _trayIconOn.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic_bold.svg');
-            _trayIconOff.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic_bold.svg');
-            _trayIconOnLock.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic_bold.svg');
-        }
-        else {
-            _trayIconOn.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic.svg');
-            _trayIconOff.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic.svg');
-            _trayIconOnLock.gicon = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic.svg');
-        }
+        _iconOnBold = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic_bold.svg');
+        _iconOffBold = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic_bold.svg');
+        _iconOnLockBold = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic_bold.svg');
+    
+        _iconOn = Gio.icon_new_for_string(this.path + '/icons/eye-on-symbolic.svg');
+        _iconOff = Gio.icon_new_for_string(this.path + '/icons/eye-off-symbolic.svg');
+        _iconOnLock = Gio.icon_new_for_string(this.path + '/icons/eye-on-lock-symbolic.svg');
 
         _bgTrayColor = _trayButton.get_background_color();
 
@@ -444,6 +479,11 @@ export default class KeepAwakeExtension extends Extension {
         _powerBatEventId = _powerSettings.connect('changed::' + POWER_BAT_KEY,  _reflectChanges);
         _sessionDelayEventId =_sessionSettings.connect('changed::' + SESSION_DELAY_KEY,  _reflectChanges);
         _screensaverActivationEventId = _screensaverSettings.connect('changed::' + SCREENSAVER_ACTIVATION_KEY,  _reflectChanges);
+
+        _useBoldIconsEventId = _extensionSettings.connect('changed::' + USE_BOLD_ICONS,  updateIcon);
+        _noColorBackgroundEventId = _extensionSettings.connect('changed::' + NO_COLOR_BACKGROUND,  updateIcon);
+        _backgroundColorEventId = _extensionSettings.connect('changed::' + BACKGROUND_COLOR,  updateIcon);
+        _allowScreenDimmEventId = _extensionSettings.connect('changed::' + ALLOW_SCREEN_DIMM,  _handleScreenDimmChanged);
 
 
         // enable UI
@@ -485,9 +525,15 @@ export default class KeepAwakeExtension extends Extension {
         _powerSettings.disconnect(_powerBatEventId);
         _sessionSettings.disconnect(_sessionDelayEventId);
         _screensaverSettings.disconnect(_screensaverActivationEventId);
+        _extensionSettings.disconnect(_useBoldIconsEventId);
+        _extensionSettings.disconnect(_noColorBackgroundEventId);
+        _extensionSettings.disconnect(_backgroundColorEventId);
+        _extensionSettings.disconnect(_allowScreenDimmEventId);
+     
         _screensaverSettings = null;
         _powerSettings = null;
         _sessionSettings = null;
+        _extensionSettings = null;
     
         _trayButton.set_child(null);
         _trayButton.destroy();

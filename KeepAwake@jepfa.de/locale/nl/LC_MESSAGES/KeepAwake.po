@@ -37,7 +37,7 @@ msgid "DESC_USE_ALTERNATIVE_ICON_SET"
 msgstr "Use an alternative icon set"
 
 msgid "TITLE_USE_BOLD_ICONS_REQUIRES_RELAUNCH"
-msgstr "Use bold icons which may be more appealing. A change requires a relaunch of Gnome to take in effect!"
+msgstr "Use bold icons which may be more appealing."
 
 
 msgid "GROUP_NOTIFICATIONS"
