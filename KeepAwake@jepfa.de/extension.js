@@ -177,7 +177,7 @@ function _updateScreenDimm() {
 }
 
 function _handleScreenDimmChanged() {
-    if (isReadyForWatchingVideo()) {
+    if (_mode == MODE_ON_LOCK || _mode == MODE_ON) {
         _updateScreenDimm();
     }
 }
