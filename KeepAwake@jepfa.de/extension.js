@@ -4,6 +4,7 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import Gio from 'gi://Gio';
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 
 import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
@@ -274,19 +275,23 @@ function updateMode() {
 
 
 function showModeTween() {
-    let _tweenText;
+    let _tweenText, _text;
 
     if (_mode == MODE_ON) {
+        _text = _("COMPUTER_KEEPS_AWAKE");
         _tweenText = new St.Label({ style_class: 'video-label-on', text: _("COMPUTER_KEEPS_AWAKE") });
     }
     else if (_mode == MODE_ON_LOCK) {
+        _text = _("COMPUTER_KEEPS_AWAKE_PERSISTENT");
 	     _tweenText = new St.Label({ style_class: 'video-label-on', text: _("COMPUTER_KEEPS_AWAKE_PERSISTENT") });
     }
     else if (_mode == MODE_OFF) {
+        _text = _("COMPUTER_CAN_FALL_ASLEEP");
         _tweenText = new St.Label({ style_class: 'video-label-off', text: _("COMPUTER_CAN_FALL_ASLEEP") });
     }
 
-    Main.uiGroup.add_actor(_tweenText);
+    //Main.notify("KeepAwake!", _text);
+    Main.uiGroup.actor.add_child(_tweenText);
 
     let monitor = Main.layoutManager.primaryMonitor;
 
@@ -300,7 +305,7 @@ function showModeTween() {
         transition: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
             if (_tweenText != null) {
-              Main.uiGroup.remove_actor(_tweenText);
+              Main.uiGroup.actor.remove_child(_tweenText);
               _tweenText.destroy();
               _tweenText = null;
             }
@@ -349,13 +354,13 @@ function updateIcon() {
 function color_from_string(color) {
     let clutterColor, res;
 
-    if (!Clutter.Color.from_string) {
-        clutterColor = new Clutter.Color();
-        clutterColor.from_string(color);
-    } else {
+    if (Cogl.Color.from_string) {
+        [res, clutterColor] = Cogl.Color.from_string(color);
+    }
+    else {
         [res, clutterColor] = Clutter.Color.from_string(color);
     }
-
+  
     return clutterColor;
 }
 
