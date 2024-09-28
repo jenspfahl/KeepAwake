@@ -275,22 +275,18 @@ function updateMode() {
 
 
 function showModeTween() {
-    let _tweenText, _text;
+    let _tweenText;
 
     if (_mode == MODE_ON) {
-        _text = _("COMPUTER_KEEPS_AWAKE");
         _tweenText = new St.Label({ style_class: 'video-label-on', text: _("COMPUTER_KEEPS_AWAKE") });
     }
     else if (_mode == MODE_ON_LOCK) {
-        _text = _("COMPUTER_KEEPS_AWAKE_PERSISTENT");
 	     _tweenText = new St.Label({ style_class: 'video-label-on', text: _("COMPUTER_KEEPS_AWAKE_PERSISTENT") });
     }
     else if (_mode == MODE_OFF) {
-        _text = _("COMPUTER_CAN_FALL_ASLEEP");
         _tweenText = new St.Label({ style_class: 'video-label-off', text: _("COMPUTER_CAN_FALL_ASLEEP") });
     }
 
-    //Main.notify("KeepAwake!", _text);
     Main.uiGroup.actor.add_child(_tweenText);
 
     let monitor = Main.layoutManager.primaryMonitor;
