@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Language: ca\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "COMPUTER_CAN_FALL_ASLEEP"
+msgstr "L'ordinador es pot adormir."
+
+msgid "COMPUTER_KEEPS_AWAKE"
+msgstr "L'ordinador es manté despert."
+
+msgid "COMPUTER_KEEPS_AWAKE_PERSISTENT"
+msgstr "L'ordinador es manté despert, fins i tot després de reinicis."
+
+msgid "DESC_ALLOW_SCREEN_DIMM"
+msgstr ""
+"Permetre que la pantalla es pugui enfosquir o apagar, tot i que Keep Awake "
+"estigui activat. (Només es prevenirà la hibernació / suspensió.)"
+
+msgid "DESC_COLORIZE_ICON_BG_IF_KEEP_AWAKE"
+msgstr "Coloritza el fons de la icona si Keep Awake està actiu."
+
+msgid "DESC_KEEP_AWAKE_WHEN_LOCKED"
+msgstr ""
+"L'ordinador es manté despert fins i tot si l'escriptori està bloquejat (i "
+"Keep Awake està actiu)."
+
+msgid "DESC_SHOW_NOTIFICATION_WHEN_CLICKED"
+msgstr ""
+"Mostra un missatge breu quan el mode s'ha canviat fent clic a la icona."
+
+msgid "DESC_USE_ALTERNATIVE_ICON_SET"
+msgstr "Utilitza un conjunt d'icones alternatiu."
+
+msgid "GROUP_APPEARANCE"
+msgstr "Aparença"
+
+msgid "GROUP_BEHAVIOUR"
+msgstr "Comportament"
+
+msgid "GROUP_NOTIFICATIONS"
+msgstr "Notificacions"
+
+msgid "TITLE_ALLOW_SCREEN_DIMM"
+msgstr "Permetre l'enfosquiment de la pantalla"
+
+msgid "TITLE_COLORIZED_ICON_BG"
+msgstr "Fons de la icona coloritzat"
+
+msgid "TITLE_COLORIZE_ICON_BGWITH_THIS_COLOR"
+msgstr "Coloritza el fons de la icona amb aquest color en aquest cas"
+
+msgid "TITLE_KEEP_AWAKE_WHEN_LOCKED"
+msgstr "Mantén despert quan l'escriptori està bloquejat"
+
+msgid "TITLE_SHOW_NOTIFICATIONS"
+msgstr "Mostra notificacions quan el mode ha estat canviat"
+
+msgid "TITLE_USE_BOLD_ICONS_REQUIRES_RELAUNCH"
+msgstr "Utilitza icones gruixudes que poden ser més atractives."
+
+msgid "VIDEO_MODE_ALREADY_CONFIGURED"
+msgstr ""
+"El teu escriptori, el salvapantalles i les opcions d'energia ja estan preparats per mantenir-se desperts!"
+
