@@ -4,7 +4,7 @@
   "settings-schema": "org.gnome.shell.extensions.KeepAwake@jepfa.de",
   "gettext-domain" : "KeepAwake",
   "shell-version": [
-    "45","46","47"
+    "45","46","47","48"
   ],
   "url": "https://github.com/jenspfahl/KeepAwake",
   "uuid": "KeepAwake@jepfa.de",
