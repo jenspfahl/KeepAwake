@@ -301,7 +301,7 @@ function showModeTween() {
         transition: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
             if (_tweenText != null) {
-              Main.actor.remove_child(_tweenText);
+              Main.uiGroup.remove_child(_tweenText);
               _tweenText.destroy();
               _tweenText = null;
             }
