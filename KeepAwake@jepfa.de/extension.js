@@ -287,7 +287,7 @@ function showModeTween() {
         _tweenText = new St.Label({ style_class: 'video-label-off', text: _("COMPUTER_CAN_FALL_ASLEEP") });
     }
 
-    Main.uiGroup.actor.add_child(_tweenText);
+    Main.uiGroup.add_child(_tweenText);
 
     let monitor = Main.layoutManager.primaryMonitor;
 
@@ -301,7 +301,7 @@ function showModeTween() {
         transition: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
             if (_tweenText != null) {
-              Main.uiGroup.actor.remove_child(_tweenText);
+              Main.actor.remove_child(_tweenText);
               _tweenText.destroy();
               _tweenText = null;
             }
